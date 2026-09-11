@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-bubble: bubble 10s ease-in infinite;
+
+  @keyframes bubble {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-150vh) scale(1.5);
+      opacity: 0;
+    }
+  }
+}
+
+.animate-bubble {
+  animation-name: bubble;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+}
