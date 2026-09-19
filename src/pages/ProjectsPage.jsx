@@ -1,19 +1,51 @@
+import { useState } from 'react';
+import allImages from '../data/projectImages.json';
 
 const ProjectsPage = () => {
-  const projects = [
-    { title: "Palms by H2o - Water Walls", desc: "Make a bold first impression, the brief was clear, create something unforgettable", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400" },
-    { title: "Eurovea Centre - Bubble Tank", desc: "H2o designs has been working alongside Eurovea Group on the redevelopment of the restrooms within...", img: "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400" },
-    { title: "Villa Waves - Water Wall", desc: "Challenging, certainly, but exactly the kind of project that defines what we do.", img: "https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=400" },
-    { title: "Adidas Goretex - Waterfall", desc: "H2o Designs created eye-catching window displays for the launch of a new waterproof footwear range...", img: "https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400" },
-    { title: "Berghaus Hydro-shell - Water Walls", desc: "Working closely with the Berghaus design team, we developed a display incorporating our signature waterfall...", img: "https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=400" },
-    { title: "Nigel Nottingham - Bubble Tanks", desc: "I went to walk through a bubble wall into my changing rooms from the swimming...", img: "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400" },
-    { title: "Hideout - Water Wall", desc: "The waterfall was positioned as the focal point visible through the entrance glazing as you...", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400" },
-    { title: "Kebabish Cafe - Bubble Wall", desc: "One of the largest bubble walls we've created in recent years, designed to make a...", img: "https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400" },
-    { title: "Avante Guard - Water Wall", desc: "H2o designs was commissioned to create a water wall that would subtly separate the backwash...", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400" },
-    { title: "Hyatt Lounge - Water Walls", desc: "One of the largest installations ever undertaken by H2o designs, this impressive waterfall wall is...", img: "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400" },
-    { title: "Idris Staircase - Water Wall", desc: "Residential projects often present the greatest challenges, as each design must integrate seamlessly into everyday...", img: "https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=400" },
-    { title: "Marmara Cafe - Water Walls & Bubble Tanks", desc: "A combination of bubble walls and waterfall features was used to define and enhance this...", img: "https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400" },
+  const [activeTab, setActiveTab] = useState("All");
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const categories = [
+    "All",
+    "Bubble Walls",
+    "Water Walls",
+    "Bubble Tubes",
+    "Lords",
+    "Commercial",
+    "Residential",
+    "Custom & Branding"
   ];
+
+  const filteredImages = activeTab === "All" 
+    ? allImages 
+    : allImages.filter(img => {
+        if (activeTab === "Bubble Tubes") return img.startsWith("projects/Bubble Tube/");
+        if (activeTab === "Bubble Walls") return img.startsWith("projects/Bubble Wall/");
+        if (activeTab === "Water Walls") return img.startsWith("projects/Water Wall/");
+        if (activeTab === "Lords") return img.startsWith("projects/Lords/");
+        if (activeTab === "Commercial") return img.startsWith("projects/Commercial/");
+        if (activeTab === "Residential") return img.startsWith("projects/Residential/");
+        if (activeTab === "Custom & Branding") return img.startsWith("projects/Custom/");
+        return false;
+      });
+
+  const openLightbox = (index) => {
+    setCurrentImageIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
+  };
+
+  const goToPrev = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
+  };
 
   return (
     <div className="w-full flex flex-col flex-grow bg-[#f4f4f4]">
@@ -57,44 +89,94 @@ const ProjectsPage = () => {
         </div>
 
         {/* Filters */}
-        <div className="mt-12 flex flex-wrap gap-4">
-          <button className="bg-[#5ea2d8] text-white px-6 py-2 rounded shadow-sm text-sm tracking-wide">All Projects</button>
-          <button className="bg-white text-[#5ea2d8] px-6 py-2 rounded shadow-sm text-sm tracking-wide hover:bg-gray-50 transition-colors">Bubble Walls</button>
-          <button className="bg-white text-[#5ea2d8] px-6 py-2 rounded shadow-sm text-sm tracking-wide hover:bg-gray-50 transition-colors">Water Walls</button>
+        <div className="mt-12 flex flex-wrap gap-4 justify-center md:justify-start">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveTab(category)}
+              className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
+                activeTab === category
+                  ? "bg-[#5ea2d8] text-white"
+                  : "bg-white text-[#5ea2d8] hover:bg-gray-50"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
         </div>
       </section>
 
       {/* Projects Grid */}
       <section className="w-full max-w-screen-xl mx-auto px-6 md:px-12 pb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {projects.map((project, idx) => (
-            <div key={idx} className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col items-center text-center p-4">
-              <div className="w-full aspect-[4/3] rounded-xl overflow-hidden mb-4">
-                <img src={project.img} alt={project.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+        {filteredImages.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">No images found for this category.</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {filteredImages.map((imgUrl, idx) => (
+              <div 
+                key={idx} 
+                className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
+                onClick={() => openLightbox(idx)}
+              >
+                <img 
+                  src={`/${imgUrl}`} 
+                  alt={`Project ${idx}`} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  loading="lazy"
+                />
               </div>
-              <h3 className="text-[#5ea2d8] font-bold text-sm md:text-base px-2 mb-3">
-                {project.title}
-              </h3>
-              <p className="text-gray-500 text-xs md:text-sm px-4 flex-grow font-light leading-relaxed mb-6">
-                {project.desc}
-              </p>
-              <button className="bg-[#333] hover:bg-black text-white text-xs tracking-wider px-6 py-2 rounded mb-2 transition-colors">
-                Read More
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Pagination */}
-        <div className="mt-12 flex justify-center items-center space-x-2 text-sm text-gray-500">
-          <button className="bg-[#050B14] text-white w-8 h-8 rounded flex items-center justify-center font-bold">1</button>
-          <button className="w-8 h-8 flex items-center justify-center hover:text-gray-900 transition-colors">2</button>
-          <button className="w-8 h-8 flex items-center justify-center hover:text-gray-900 transition-colors">3</button>
-          <span>...</span>
-          <button className="w-8 h-8 flex items-center justify-center hover:text-gray-900 transition-colors">10</button>
-          <button className="px-2 h-8 flex items-center justify-center hover:text-gray-900 transition-colors">Next &gt;</button>
-        </div>
+            ))}
+          </div>
+        )}
       </section>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+          {/* Close Button */}
+          <button 
+            onClick={closeLightbox} 
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Previous Button */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+            className="absolute left-2 md:left-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Main Content (Image/Video) */}
+          <div 
+            className="w-full h-full flex items-center justify-center px-4 md:px-24 py-12"
+            onClick={closeLightbox}
+          >
+            <img 
+              src={`/${filteredImages[currentImageIndex]}`} 
+              alt="Expanded view" 
+              className="max-w-full max-h-full object-contain shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          {/* Next Button */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); goToNext(); }}
+            className="absolute right-2 md:right-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

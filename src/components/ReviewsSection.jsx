@@ -8,30 +8,30 @@ const ReviewsSection = () => {
 
   const baseReviews = [
     {
-      name: 'J miah',
-      time: '3 years ago',
+      name: 'Jitendra Singh',
+      time: '2 months ago',
       avatar: 'J',
       avatarBg: 'bg-[#407B43]', // Greenish
-      text: 'Great work and communication from Ben & the team. New waterfall feature looks great. Would highly recommend!',
+      text: 'Great work and communication from the Ninja Lights & Designs team. हमारा नया Water Wall feature बहुत ही शानदार लग रहा है। Would highly recommend!',
     },
     {
-      name: 'Carrie Darby (Skin ...',
-      time: '3 years ago',
+      name: 'Priya Shekhawat',
+      time: '4 months ago',
       avatarImg: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100', // Placeholder
-      text: 'Great communication, all on time and as promised and love the finished results. Thank you',
+      text: 'Delivery ekdum time par hui and as promised, we love the finished results. The new Bubble Tubes in our clinic look amazing. उनका काम सच में काबिले तारीफ है। Thank you!',
     },
     {
-      name: 'Chrissie Wilkinson',
-      time: '3 years ago',
+      name: 'Anjali Jain',
+      time: '6 months ago',
       avatarImg: 'https://images.unsplash.com/photo-1554727242-741c14fa561c?auto=format&fit=crop&q=80&w=100', // Placeholder
-      text: 'We had a bubble wall installed in 2020. Ben and colleague worked professionally with delivery and installation. There...',
+      text: 'We had a custom Bubble Wall installed in our Udaipur office. Team worked professionally with delivery and installation. इंस्टॉलेशन एकदम परफेक्ट थी और क्वालिटी बहुत प्रीमियम है...',
     },
     {
-      name: 'Dean Hale',
-      time: '3 years ago',
+      name: 'Dinesh Sharma',
+      time: '8 months ago',
       avatar: 'D',
       avatarBg: 'bg-[#7B5E57]', // Brownish
-      text: 'Very efficient service turned up on time from the other end of the country. Did the job ahead of the original schedule and...',
+      text: 'Very efficient service! हमने अपने घर के मंदिर के लिए custom Lord Wall बनवाई थी। Did the job ahead of the original schedule and it looks absolutely divine...',
     }
   ];
 

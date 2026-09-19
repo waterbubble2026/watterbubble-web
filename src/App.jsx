@@ -13,7 +13,7 @@ import FooterSection from './components/FooterSection';
 import ComingSoonPage from './pages/ComingSoonPage';
 
 const App = () => {
-  return <ComingSoonPage />;
+  // return <ComingSoonPage />;
 
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,11 +67,11 @@ const App = () => {
           }`}
       >
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 flex justify-between items-center">
-          {/* Logo Placeholder */}
+          {/* Logo */}
           <div className="flex-shrink-0">
-            <div className={`w-32 h-8 rounded border-2 flex items-center justify-center font-bold tracking-widest transition-colors ${isScrolled ? 'border-[#3b82f6] text-[#3b82f6]' : 'border-white text-white'}`}>
-              LOGO
-            </div>
+            <Link to="/">
+              <img src="/logo.png" alt="Water Bubble Walls" className="h-10 object-contain" />
+            </Link>
           </div>
 
           {/* Desktop Nav Links */}
@@ -81,8 +81,8 @@ const App = () => {
                 key={link.name}
                 to={link.path}
                 className={`text-[12px] font-bold uppercase tracking-wider transition-colors ${isScrolled
-                    ? link.path === currentPath ? 'text-[#5ea2d8]' : 'text-gray-600 hover:text-[#5ea2d8]'
-                    : link.path === currentPath ? 'text-white' : 'text-gray-300 hover:text-white'
+                  ? link.path === currentPath ? 'text-[#5ea2d8]' : 'text-gray-600 hover:text-[#5ea2d8]'
+                  : link.path === currentPath ? 'text-white' : 'text-gray-300 hover:text-white'
                   }`}
               >
                 {link.name}

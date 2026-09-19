@@ -1,32 +1,36 @@
+import { href, Link } from "react-router-dom";
 
 const FeaturesSection = () => {
   const features = [
     {
       number: '01',
       title: 'Water Walls',
-      description: 'Water Walls and Waterfalls are perfect for architectural displays, reception features, entrance lobbies, VIP lounges and sophisticated bars.',
-      image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=600',
+      description: 'Our bespoke Water Walls are the premier architectural choice for luxury hotel lobbies, corporate reception areas, and upscale residential developments across India. They create a sophisticated atmosphere, combining natural elegance with contemporary design, perfect for high-traffic public spaces.',
+      image: '/home/feat-1.png',
       bgColor: 'bg-[#091534]',
       titleColor: 'text-[#2f7cc5]',
       buttonColor: 'border-[#2f7cc5] text-[#2f7cc5] hover:bg-[#2f7cc5] hover:text-white',
+      href: 'water-walls'
     },
     {
       number: '02',
       title: 'Bubble Walls',
-      description: 'Because all our Bubble Walls are individually designed and manufactured by us we can ensure that they will perfectly fit your requirements.',
-      image: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=600',
+      description: 'Designed and manufactured by Ninja Lights & Designs in Udaipur, Rajasthan, each custom Bubble Wall is tailored to your exact specifications. We ensure impeccable quality and fit, transforming any wall into a mesmerizing, color-changing centerpiece that enhances branding and atmosphere in corporate and commercial environments.',
+      image: '/home/feat-2.png',
       bgColor: 'bg-[#4a7c99]',
       titleColor: 'text-[#81b5d6]',
       buttonColor: 'border-[#81b5d6] text-[#81b5d6] hover:bg-[#81b5d6] hover:text-[#091534]',
+      href: 'bubble-walls'
     },
     {
       number: '03',
       title: 'Bubble Tubes',
-      description: 'Our bubble tubes are designed to add a unique calming visual effect to a wide variety of retail, leisure and exhibition spaces perfect for sensory rooms.',
-      image: 'https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=600',
+      description: 'Our captivating Bubble Tubes add a distinct, calming visual element to sensory rooms, healthcare facilities, children’s play areas, and unique retail displays throughout India. These interactive, freestanding features create dynamic focal points that enhance wellness, engage customers, and bring spaces to life.',
+      image: '/home/feat-3.png',
       bgColor: 'bg-[#a4c9eb]',
       titleColor: 'text-[#5597d2]',
       buttonColor: 'border-[#5597d2] text-[#5597d2] hover:bg-[#5597d2] hover:text-white',
+      href: 'bubble-tubes'
     }
   ];
 
@@ -51,9 +55,9 @@ const FeaturesSection = () => {
               className="w-full h-auto object-cover aspect-[4/3] transform transition-transform duration-700 group-hover:scale-110"
             />
           </div>
-          <button className={`mt-auto self-start border text-xs font-bold px-8 py-3 rounded uppercase tracking-widest transition-colors ${feature.buttonColor}`}>
+          <Link to={feature.href} className={`mt-auto self-start border text-xs font-bold px-8 py-3 rounded uppercase tracking-widest transition-colors ${feature.buttonColor}`}>
             More
-          </button>
+          </Link>
         </div>
       ))}
     </section>

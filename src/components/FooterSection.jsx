@@ -7,22 +7,14 @@ const FooterSection = () => {
         
         {/* Logo Area */}
         <div className="flex items-center space-x-2">
-          <div className="text-gray-400 text-3xl md:text-5xl flex items-baseline">
-            <span className="font-light">H</span>
-            <span className="text-base md:text-2xl -ml-0.5 mt-4">2</span>
-            <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-[#4aa0e0] ml-1 flex items-start justify-start p-1 md:p-1.5 shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.3)] self-center -mt-1 md:-mt-2">
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full"></div>
-            </div>
-            <span className="ml-2 md:ml-3 font-light tracking-wide text-gray-400">designs</span>
-          </div>
+          <img src="/logo.png" alt="Water Bubble Walls" className="h-12 object-contain" />
         </div>
 
         {/* Address & Contact */}
         <div className="text-center text-[10px] md:text-sm text-gray-200 hidden md:block font-light">
-          <p>Unit 7, Brookside Industrial Units, Taylor Street, Clitheroe</p>
-          <p>BB7 1NL</p>
+          <p>Udaipur, Rajasthan, India</p>
           <p className="mt-1 font-medium text-[#4aa0e0]">
-            Tel: 01254 825205 <span className="text-gray-300 px-1">|</span> info@h2o-designs.co.uk
+            Tel: +91 89470 32360
           </p>
         </div>
 
@@ -45,7 +37,7 @@ const FooterSection = () => {
       
       {/* Bottom Part */}
       <div className="bg-[#1f1f1f] text-[gray] text-[8px] md:text-xs py-2 md:py-3 flex justify-center items-center tracking-widest uppercase text-center shrink-0">
-        H2O DESIGNS INTERIOR WATER FEATURES | WEB DESIGN BY MCKENZIE CREATIVE
+        WATER BUBBLE WALLS | POWERED BY NINJA LIGHTS & DESIGN
       </div>
     </footer>
   );

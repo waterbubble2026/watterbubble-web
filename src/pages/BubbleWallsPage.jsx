@@ -3,11 +3,11 @@ import { useState } from 'react';
 const BubbleWallsPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const galleryImages = Array(24).fill('https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400');
-  
+
   return (
     <div className="w-full flex flex-col flex-grow">
       {/* Hero Section */}
-      <section 
+      <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
         style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '50vh' }}
       >
@@ -22,9 +22,9 @@ const BubbleWallsPage = () => {
       <section className="w-full relative bg-[#f4f4f4] py-16 md:py-24">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '16px 16px' }}></div>
-        
+
         <div className="max-w-screen-xl mx-auto px-6 md:px-12 relative z-10 flex flex-col">
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
             {/* Left Column */}
             <div className="flex flex-col space-y-6 text-gray-600 text-sm leading-relaxed font-light">
@@ -46,7 +46,7 @@ const BubbleWallsPage = () => {
               <p>
                 With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the UK and Europe, <strong className="text-gray-700 font-bold">H2o Designs</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
               </p>
-              
+
               {/* Contact Button */}
               <div className="mt-8 pt-4">
                 <button className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors">
@@ -58,12 +58,12 @@ const BubbleWallsPage = () => {
             {/* Right Column */}
             <div className="flex flex-col">
               <div className="grid grid-cols-2 gap-4">
-                <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400" alt="Detail 1" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=400" alt="Detail 2" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400" alt="Detail 3" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400" alt="Detail 4" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/1.png" alt="Detail 1" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/2.png" alt="Detail 2" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/3.png" alt="Detail 3" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/4.png" alt="Detail 4" className="w-full aspect-square object-cover rounded-xl shadow-md" />
               </div>
-              
+
               <div className="mt-8 text-gray-600 text-sm leading-relaxed font-light space-y-4">
                 <p>
                   Our <strong className="text-gray-700 font-bold">bubble walls</strong> are designed not only to create impressive visual impact, but also to provide dependable performance and low-maintenance operation for years to come.
@@ -71,9 +71,9 @@ const BubbleWallsPage = () => {
                 <p>
                   Whether you require a contemporary glass bubble wall, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">bubble installation</strong>, <strong className="text-gray-700 font-bold">H2o Designs</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
                 </p>
-                
+
                 <a href="#gallery" className="inline-flex items-center text-[#88cdeb] text-xs font-semibold tracking-widest uppercase mt-4 hover:text-[#5ea2d8] transition-colors">
-                  GALLERY 
+                  GALLERY
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
                 </a>
               </div>
@@ -94,12 +94,12 @@ const BubbleWallsPage = () => {
 
       {/* Lightbox */}
       {selectedImage && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-12 backdrop-blur-sm cursor-pointer" 
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-12 backdrop-blur-sm cursor-pointer"
           onClick={() => setSelectedImage(null)}
         >
-          <button 
-            className="absolute top-6 right-6 text-white hover:text-gray-300 z-[101] bg-black/50 rounded-full p-2" 
+          <button
+            className="absolute top-6 right-6 text-white hover:text-gray-300 z-[101] bg-black/50 rounded-full p-2"
             onClick={() => setSelectedImage(null)}
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>

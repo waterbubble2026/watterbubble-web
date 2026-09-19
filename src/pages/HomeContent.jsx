@@ -11,34 +11,24 @@ const HomeContent = ({ images }) => (
         {/* Left Column: Text Content */}
         <div className="col-span-2 bg-[rgba(0,0,0,0.4)] backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
           <h1 className="text-4xl md:text-5xl font-light text-[#5ea2d8] mb-8 tracking-wide">
-            Water Artistry
+            Masterpieces in Water & Light
           </h1>
 
           <div className="space-y-6 text-gray-200 text-sm md:text-base leading-relaxed font-light">
             <p>
-              Welcome to H2o Designs, Europe's leading specialists in the design, manufacture, and
-              installation of bespoke interior water features for luxury commercial, residential and
-              hospitality environments. With more than 21 years of industry experience, we create visually
-              striking water installations that transform interiors and deliver unforgettable visual impact.
+              Welcome to <strong className="text-[#5ea2d8] font-semibold">Water Bubble Walls</strong> by Ninja Lights & Designs, India's leading specialists in the design, manufacture, and installation of bespoke interior water features for luxury commercial, residential, and hospitality environments. Based in Udaipur, Rajasthan, we create visually striking water installations that transform interiors and deliver unforgettable visual impact.
             </p>
 
             <p>
-              Our bespoke creations include custom bubble walls, <strong className="text-[#5ea2d8] font-semibold">water walls</strong>, <strong className="text-[#5ea2d8] font-semibold">Bubble tanks</strong>, indoor water
-              walls, Waterfalls, illuminated <strong className="text-[#5ea2d8] font-semibold">bubble tubes</strong>, feature displays, all carefully designed to enhance
-              atmosphere, elevate interiors, and create memorable customer experiences. From high-end
-              hotels and stylish bars to restaurants, corporate spaces, retail environments, exhibitions, and
-              television productions, our work can be found in prestigious venues throughout the UK and <strong className="text-[#5ea2d8] font-semibold">Europe</strong>.
+              Our bespoke creations include custom bubble walls, <strong className="text-[#5ea2d8] font-semibold">water walls</strong>, <strong className="text-[#5ea2d8] font-semibold">bubble tanks</strong>, indoor water walls, waterfalls, illuminated <strong className="text-[#5ea2d8] font-semibold">bubble tubes</strong>, and exclusively designed <strong className="text-[#5ea2d8] font-semibold">Lord walls</strong>. All are carefully crafted to enhance atmosphere, elevate interiors, and create memorable experiences. From high-end hotels and stylish corporate spaces to highly secure government sectors, our work can be found in prestigious venues throughout India, including esteemed installations for the <strong className="text-[#5ea2d8] font-semibold">DRDO, Indian Air Force, Indian Navy, and Indian Army</strong>.
             </p>
 
             <p>
-              From initial concept and consultation through to manufacture, delivery, and installation, <strong className="text-[#5ea2d8] font-semibold">H2o
-                Designs</strong> provides a complete fully managed service, ensuring every project is delivered to the
-              highest possible standard.
+              From initial concept and consultation through to manufacture, delivery, and installation, <strong className="text-[#5ea2d8] font-semibold">Water Bubble Walls</strong> provides a complete, fully managed service, ensuring every project is delivered to the highest possible standard.
             </p>
 
             <p>
-              Explore our <strong className="text-[#5ea2d8] font-semibold">latest projects</strong> and discover how bespoke water artistry can transform interiors,
-              create atmosphere, and bring exceptional spaces to life.
+              Explore our <strong className="text-[#5ea2d8] font-semibold">latest projects</strong> and discover how bespoke water artistry can transform interiors, create atmosphere, and bring exceptional spaces to life.
             </p>
           </div>
 
