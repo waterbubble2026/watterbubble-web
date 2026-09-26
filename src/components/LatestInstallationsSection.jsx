@@ -2,13 +2,13 @@
 const LatestInstallationsSection = () => {
   const installations = [
     {
-      title: 'Palms by H2o – Water Walls',
+      title: 'Palms by Water Bubble Walls – Water Walls',
       description: 'Make a bold first impression, the brief was clear, create something unforgettable',
       image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400',
     },
     {
       title: 'Eurovea Centre – Bubble Tank',
-      description: 'H2o designs has been working alongside Eurovea Group on the redevelopment of the restrooms within a Shopping Mall.',
+      description: 'Water Bubble Walls has been working alongside Eurovea Group on the redevelopment of the restrooms within a Shopping Mall.',
       image: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400',
     },
     {
@@ -18,7 +18,7 @@ const LatestInstallationsSection = () => {
     },
     {
       title: 'Adidas Goretex – Waterfall',
-      description: 'H2o Designs created eye-catching window displays for the launch of a new waterproof footwear range by Adidas.',
+      description: 'Water Bubble Walls created eye-catching window displays for the launch of a new waterproof footwear range by Adidas.',
       image: 'https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400',
     }
   ];

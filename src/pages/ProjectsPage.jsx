@@ -2,12 +2,12 @@ import { useState } from 'react';
 import allImages from '../data/projectImages.json';
 
 const ProjectsPage = () => {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("Bubble Walls");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(8);
 
   const categories = [
-    "All",
     "Bubble Walls",
     "Water Walls",
     "Bubble Tubes",
@@ -17,18 +17,18 @@ const ProjectsPage = () => {
     "Custom & Branding"
   ];
 
-  const filteredImages = activeTab === "All" 
-    ? allImages 
-    : allImages.filter(img => {
-        if (activeTab === "Bubble Tubes") return img.startsWith("projects/Bubble Tube/");
-        if (activeTab === "Bubble Walls") return img.startsWith("projects/Bubble Wall/");
-        if (activeTab === "Water Walls") return img.startsWith("projects/Water Wall/");
-        if (activeTab === "Lords") return img.startsWith("projects/Lords/");
-        if (activeTab === "Commercial") return img.startsWith("projects/Commercial/");
-        if (activeTab === "Residential") return img.startsWith("projects/Residential/");
-        if (activeTab === "Custom & Branding") return img.startsWith("projects/Custom/");
-        return false;
-      });
+  const filteredImages = allImages.filter(img => {
+    if (activeTab === "Bubble Tubes") return img.startsWith("projects/Bubble Tube/");
+    if (activeTab === "Bubble Walls") return img.startsWith("projects/Bubble Wall/");
+    if (activeTab === "Water Walls") return img.startsWith("projects/Water Wall/");
+    if (activeTab === "Lords") return img.startsWith("projects/Lords/");
+    if (activeTab === "Commercial") return img.startsWith("projects/Commercial/");
+    if (activeTab === "Residential") return img.startsWith("projects/Residential/");
+    if (activeTab === "Custom & Branding") return img.startsWith("projects/Custom/");
+    return false;
+  });
+
+  const displayedImages = filteredImages.slice(0, visibleCount);
 
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
@@ -66,7 +66,7 @@ const ProjectsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           <div className="flex flex-col text-gray-600 text-sm leading-relaxed font-light">
             <p className="text-xl md:text-2xl text-gray-400 font-light leading-snug mb-6">
-              At <strong className="text-gray-700 font-bold">H2O Designs</strong>, we believe that every project should be as unique as the space it enhances. That is why every <strong className="text-[#5ea2d8] font-semibold">water wall</strong>, water feature, <strong className="text-[#5ea2d8] font-semibold">bubble wall</strong>, and <strong className="text-[#5ea2d8] font-semibold">bubble tank</strong> we create is individually designed and handcrafted to meet the precise requirements, vision, and objectives of each client.
+              At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we believe that every project should be as unique as the space it enhances. That is why every <strong className="text-[#5ea2d8] font-semibold">water wall</strong>, water feature, <strong className="text-[#5ea2d8] font-semibold">bubble wall</strong>, and <strong className="text-[#5ea2d8] font-semibold">bubble tank</strong> we create is individually designed and handcrafted to meet the precise requirements, vision, and objectives of each client.
             </p>
             <p className="mb-4">
               Rather than offering off-the-shelf products, we take a bespoke approach to every commission, ensuring that each installation is tailored to complement its surroundings while delivering a striking visual impact.
@@ -80,10 +80,10 @@ const ProjectsPage = () => {
               Whether the requirement is for a contemporary water wall that creates a sense of tranquility, an illuminated bubble wall that adds movement and visual interest, or a custom-designed bubble tank that enhances an interior space, each feature is built using premium materials and crafted to the highest standards. We understand that every project presents its own challenges and opportunities, which is why we tailor dimensions, finishes, lighting options, branding elements, and technical specifications to suit the unique needs of each installation.
             </p>
             <p>
-              Over the years, H2O Designs has successfully delivered a wide range of bespoke water features for clients across numerous sectors, creating installations that combine innovative design, expert craftsmanship, and reliable performance. Our portfolio showcases the versatility of our work and demonstrates our commitment to delivering exceptional results, regardless of project size or complexity.
+              Over the years, Water Bubble Walls has successfully delivered a wide range of bespoke water features for clients across numerous sectors, creating installations that combine innovative design, expert craftsmanship, and reliable performance. Our portfolio showcases the versatility of our work and demonstrates our commitment to delivering exceptional results, regardless of project size or complexity.
             </p>
             <p>
-              Below, you will find a selection of example projects that highlight the quality, creativity, and bespoke nature of our work. These installations provide an insight into the wide range of custom water features we have designed and manufactured, illustrating how H2O Designs transforms individual concepts into captivating and memorable centerpieces.
+              Below, you will find a selection of example projects that highlight the quality, creativity, and bespoke nature of our work. These installations provide an insight into the wide range of custom water features we have designed and manufactured, illustrating how Water Bubble Walls transforms individual concepts into captivating and memorable centerpieces.
             </p>
           </div>
         </div>
@@ -93,7 +93,10 @@ const ProjectsPage = () => {
           {categories.map((category) => (
             <button
               key={category}
-              onClick={() => setActiveTab(category)}
+              onClick={() => {
+                setActiveTab(category);
+                setVisibleCount(8);
+              }}
               className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
                 activeTab === category
                   ? "bg-[#5ea2d8] text-white"
@@ -111,22 +114,36 @@ const ProjectsPage = () => {
         {filteredImages.length === 0 ? (
           <div className="text-center text-gray-500 py-12">No images found for this category.</div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filteredImages.map((imgUrl, idx) => (
-              <div 
-                key={idx} 
-                className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
-                onClick={() => openLightbox(idx)}
-              >
-                <img 
-                  src={`/${imgUrl}`} 
-                  alt={`Project ${idx}`} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  loading="lazy"
-                />
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {displayedImages.map((imgUrl, idx) => (
+                <div 
+                  key={idx} 
+                  className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
+                  onClick={() => openLightbox(idx)}
+                >
+                  <img 
+                    src={`/${imgUrl}`} 
+                    alt={`Project ${idx}`} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {visibleCount < filteredImages.length && (
+              <div className="mt-12 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount(prev => prev + 8)}
+                  className="px-8 py-3 bg-[#5ea2d8] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
+                >
+                  Load More
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </section>
 

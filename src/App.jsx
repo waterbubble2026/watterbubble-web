@@ -6,7 +6,7 @@ import WaterWallsPage from './pages/WaterWallsPage';
 import BubbleWallsPage from './pages/BubbleWallsPage';
 import BubbleTubesPage from './pages/BubbleTubesPage';
 import ProjectsPage from './pages/ProjectsPage';
-import NewsPage from './pages/NewsPage';
+import VideosPage from './pages/VideosPage';
 import ContactPage from './pages/ContactPage';
 import FooterSection from './components/FooterSection';
 
@@ -17,8 +17,13 @@ const App = () => {
 
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPath]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,15 +41,14 @@ const App = () => {
     { name: 'Bubble Tubes', path: '/bubble-tubes' },
     { name: 'Projects', path: '/projects' },
     { name: 'Videos', path: '/videos' },
-    { name: 'News', path: '/news' },
     { name: 'Contact', path: '/contact' }
   ];
 
   const images = [
-    'https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400',
-    'https://images.unsplash.com/photo-1518778278964-db097be6a17b?auto=format&fit=crop&q=80&w=400',
-    'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400',
-    'https://images.unsplash.com/photo-1500322969630-a26ab6eb64cc?auto=format&fit=crop&q=80&w=400'
+    '/home/grid1.png',
+    '/home/grid2.png',
+    '/home/grid3.png',
+    '/home/grid4.png',
   ];
 
   return (
@@ -90,15 +94,39 @@ const App = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button - Placeholder */}
+          {/* Mobile Menu Button */}
           <div className="lg:hidden">
-            <button className={`${isScrolled ? 'text-[#5ea2d8]' : 'text-white'}`}>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`${isScrolled ? 'text-[#5ea2d8]' : 'text-white'}`}
+            >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-[#050B14] shadow-xl py-6 px-8 flex flex-col space-y-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`text-sm font-bold uppercase tracking-widest transition-colors ${link.path === currentPath ? 'text-[#5ea2d8]' : 'text-gray-300 hover:text-white'
+                  }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* Content Area */}
@@ -109,7 +137,7 @@ const App = () => {
         <Route path="/bubble-walls" element={<BubbleWallsPage />} />
         <Route path="/bubble-tubes" element={<BubbleTubesPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/news" element={<NewsPage />} />
+        <Route path="/videos" element={<VideosPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 
 const BubbleTubesPage = () => {
   return (
@@ -5,7 +6,7 @@ const BubbleTubesPage = () => {
       {/* Hero Section */}
       <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
-        style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '50vh' }}
+        style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '40vh' }}
       >
         <div className="absolute inset-0 bg-[#050B14]/70 pointer-events-none"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-teal-900/40 to-green-900/40 pointer-events-none"></div>
@@ -34,20 +35,18 @@ const BubbleTubesPage = () => {
                 Perfect for reception areas, entrance lobbies, VIP lounges, hotels, restaurants, spas, retail environments, and high-end bar installations, bespoke bubble features provide a striking focal point that captures attention while creating a calming and immersive ambience.
               </p>
               <p>
-                At <strong className="text-gray-700 font-bold">H2o Designs</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-gray-700 font-bold">bubble tubes</strong> tailored entirely to the client's vision, environment, and technical requirements.
+                At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-gray-700 font-bold">bubble tubes</strong> tailored entirely to the client's vision, environment, and technical requirements.
               </p>
               <p>
-                Every feature is individually made to measure at our Lancashire studio using premium materials, precision engineering, and high-quality components to ensure exceptional craftsmanship, durability, and long-term reliability. We offer complete flexibility in size, finishes, lighting effects, branding integration, and water flow design.
+                Every feature is individually made to measure at our Udaipur, Rajasthan studio using premium materials, precision engineering, and high-quality components to ensure exceptional craftsmanship, durability, and long-term reliability. We offer complete flexibility in size, finishes, lighting effects, branding integration, and water flow design.
               </p>
               <p>
-                With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the UK and Europe, <strong className="text-gray-700 font-bold">H2o Designs</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
+                With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the India, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
               </p>
 
               {/* Contact Button */}
               <div className="mt-8 pt-4">
-                <button className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors">
-                  Contact Us
-                </button>
+                <Link to="/contact" className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
               </div>
             </div>
 
@@ -65,7 +64,7 @@ const BubbleTubesPage = () => {
                   Our <strong className="text-gray-700 font-bold">bubble tubes</strong> are designed not only to create impressive visual impact, but also to provide dependable performance and low-maintenance operation for years to come.
                 </p>
                 <p>
-                  Whether you require a contemporary glass tube, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">bubble installation</strong>, <strong className="text-gray-700 font-bold">H2o Designs</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
+                  Whether you require a contemporary glass tube, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">bubble installation</strong>, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
                 </p>
               </div>
             </div>

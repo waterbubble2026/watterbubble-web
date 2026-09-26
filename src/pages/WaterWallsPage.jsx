@@ -1,15 +1,19 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import allImages from '../data/projectImages.json';
 
 const WaterWallsPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const galleryImages = Array(24).fill('https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=400');
+  const galleryImages = allImages
+    .filter(img => img.startsWith("projects/Water Wall/"))
+    .map(img => `/${img}`);
 
   return (
     <div className="w-full flex flex-col flex-grow">
       {/* Hero Section */}
       <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
-        style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '50vh' }}
+        style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '40vh' }}
       >
         <div className="absolute inset-0 bg-[#050B14]/70 pointer-events-none"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-blue-900/40 pointer-events-none"></div>
@@ -38,20 +42,18 @@ const WaterWallsPage = () => {
                 Perfect for reception areas, entrance lobbies, VIP lounges, hotels, restaurants, spas, retail environments, and high-end bar installations, bespoke water walls provide a striking focal point that captures attention while creating a calming and immersive ambience. Whether used as a standalone architectural feature or integrated into a wider interior design scheme, flowing water introduces movement, sound, and visual depth that transforms the overall feel of a space.
               </p>
               <p>
-                At <strong className="text-gray-700 font-bold">H2o Designs</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-gray-700 font-bold">water walls</strong> and <strong className="text-gray-700 font-bold">waterfalls</strong> tailored entirely to the client's vision, environment, and technical requirements. We produce installations of every scale, from compact decorative features to large architectural statement pieces for luxury commercial interiors.
+                At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-gray-700 font-bold">water walls</strong> and <strong className="text-gray-700 font-bold">waterfalls</strong> tailored entirely to the client's vision, environment, and technical requirements. We produce installations of every scale, from compact decorative features to large architectural statement pieces for luxury commercial interiors.
               </p>
               <p>
-                Every water feature is individually made to measure at our Lancashire studio using premium materials, precision engineering, and high-quality components to ensure exceptional craftsmanship, durability, and long-term reliability. We offer complete flexibility in size, finishes, lighting effects, branding integration, and water flow design, allowing each installation to complement its surroundings perfectly.
+                Every water feature is individually made to measure at our Udaipur, Rajasthan studio using premium materials, precision engineering, and high-quality components to ensure exceptional craftsmanship, durability, and long-term reliability. We offer complete flexibility in size, finishes, lighting effects, branding integration, and water flow design, allowing each installation to complement its surroundings perfectly.
               </p>
               <p>
-                With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the UK and Europe, <strong className="text-gray-700 font-bold">H2o Designs</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
+                With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the India, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
               </p>
 
               {/* Contact Button */}
               <div className="mt-8 pt-4">
-                <button className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors">
-                  Contact Us
-                </button>
+                <Link to="/contact" className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
               </div>
             </div>
 
@@ -69,13 +71,8 @@ const WaterWallsPage = () => {
                   Our <strong className="text-gray-700 font-bold">water walls</strong> are designed not only to create impressive visual impact, but also to provide dependable performance and low-maintenance operation for years to come.
                 </p>
                 <p>
-                  Whether you require a contemporary glass water wall, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">waterfall installation</strong>, <strong className="text-gray-700 font-bold">H2o Designs</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
+                  Whether you require a contemporary glass water wall, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">waterfall installation</strong>, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
                 </p>
-
-                <a href="#gallery" className="inline-flex items-center text-[#88cdeb] text-xs font-semibold tracking-widest uppercase mt-4 hover:text-[#5ea2d8] transition-colors">
-                  GALLERY
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-                </a>
               </div>
             </div>
           </div>
@@ -83,7 +80,7 @@ const WaterWallsPage = () => {
       </section>
 
       {/* Massive Gallery Section */}
-      <section id="gallery" className="w-full h-screen grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-1 p-1 bg-white">
+      <section id="gallery" className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-1 p-1 bg-white auto-rows-[150px] md:auto-rows-[200px]">
         {galleryImages.map((src, idx) => (
           <div key={idx} className="relative w-full h-full overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(src)}>
             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>

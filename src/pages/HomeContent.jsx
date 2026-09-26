@@ -9,7 +9,7 @@ const HomeContent = ({ images }) => (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start w-full">
 
         {/* Left Column: Text Content */}
-        <div className="col-span-2 bg-[rgba(0,0,0,0.4)] backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
+        <div className="lg:col-span-2 bg-[rgba(0,0,0,0.4)] backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
           <h1 className="text-4xl md:text-5xl font-light text-[#5ea2d8] mb-8 tracking-wide">
             Masterpieces in Water & Light
           </h1>
