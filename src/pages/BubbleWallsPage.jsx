@@ -1,15 +1,72 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import allImages from '../data/projectImages.json';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const BubbleWallsPage = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const galleryImages = allImages
-    .filter(img => img.startsWith("projects/Bubble Wall/"))
-    .map(img => `/${img}`);
+  const [subcategories, setSubcategories] = useState([]);
+  const [activeTab, setActiveTab] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Lightbox & Pagination State
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(10);
+
+  const location = useLocation();
+  const tabParam = new URLSearchParams(location.search).get('tab');
+
+  useEffect(() => {
+    const fetchSubs = async () => {
+      try {
+        const res = await fetch('/api/subcategories');
+        const data = await res.json();
+        const bubbleWallSubs = data.filter(sub => sub.mainCategory === 'Bubble Walls');
+        setSubcategories(bubbleWallSubs);
+        if (bubbleWallSubs.length > 0) {
+          if (tabParam && bubbleWallSubs.some(sub => sub.name === tabParam)) {
+            setActiveTab(tabParam);
+          } else {
+            setActiveTab(bubbleWallSubs[0].name);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch subcategories', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSubs();
+  }, []); // Only fetch on mount
+
+  useEffect(() => {
+    if (tabParam && subcategories.some(sub => sub.name === tabParam)) {
+      setActiveTab(tabParam);
+      setVisibleCount(10);
+    }
+  }, [tabParam, subcategories]);
+
+  const activeSubcategory = subcategories.find(sub => sub.name === activeTab);
+  const filteredImages = activeSubcategory?.images || [];
+  const displayedImages = filteredImages.slice(0, visibleCount);
+
+  const openLightbox = (index) => {
+    setCurrentImageIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
+  };
+
+  const goToPrev = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
+  };
 
   return (
-    <div className="w-full flex flex-col flex-grow">
+    <div className="w-full flex flex-col flex-grow bg-[#f4f4f4]">
       {/* Hero Section */}
       <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
@@ -23,7 +80,7 @@ const BubbleWallsPage = () => {
       </section>
 
       {/* Content Section */}
-      <section className="w-full relative bg-[#f4f4f4] py-16 md:py-24">
+      <section className="w-full relative py-16 md:py-24">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '16px 16px' }}></div>
 
@@ -73,36 +130,120 @@ const BubbleWallsPage = () => {
                 <p>
                   Whether you require a contemporary glass bubble wall, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">bubble installation</strong>, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
                 </p>
-
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Massive Gallery Section */}
-      <section id="gallery" className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-1 p-1 bg-white auto-rows-[150px] md:auto-rows-[200px]">
-        {galleryImages.map((src, idx) => (
-          <div key={idx} className="relative w-full h-full overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(src)}>
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
-            <img src={src} alt={`Gallery Image ${idx + 1}`} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
-          </div>
-        ))}
+      {/* Dynamic Subcategories & Gallery Section */}
+      <section id="subcategories" className="w-full max-w-screen-xl mx-auto px-6 md:px-12 py-16">
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12 text-gray-500">Loading categories...</div>
+        ) : subcategories.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">No categories available yet.</div>
+        ) : (
+          <>
+            {/* Tabs */}
+            <div className="mb-12 flex flex-wrap gap-4 justify-center md:justify-start">
+              {subcategories.map((sub) => (
+                <button
+                  key={sub._id}
+                  onClick={() => {
+                    setActiveTab(sub.name);
+                    setVisibleCount(10);
+                  }}
+                  className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
+                    activeTab === sub.name
+                      ? "bg-[#5ea2d8] text-white"
+                      : "bg-white text-[#5ea2d8] hover:bg-gray-50"
+                  }`}
+                >
+                  {sub.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Images Grid */}
+            {filteredImages.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">No images found for this category.</div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                  {displayedImages.map((img, idx) => (
+                    <div 
+                      key={img._id} 
+                      className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
+                      onClick={() => openLightbox(idx)}
+                    >
+                      <img 
+                        src={img.url} 
+                        alt={`${activeTab} ${idx + 1}`} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {visibleCount < filteredImages.length && (
+                  <div className="mt-12 flex justify-center">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + 10)}
+                      className="px-8 py-3 bg-[#5ea2d8] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
+                    >
+                      Load More
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
       </section>
 
-      {/* Lightbox */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-12 backdrop-blur-sm cursor-pointer"
-          onClick={() => setSelectedImage(null)}
-        >
-          <button
-            className="absolute top-6 right-6 text-white hover:text-gray-300 z-[101] bg-black/50 rounded-full p-2"
-            onClick={() => setSelectedImage(null)}
+      {/* Lightbox Modal */}
+      {lightboxOpen && filteredImages.length > 0 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+          <button 
+            onClick={closeLightbox} 
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
-          <img src={selectedImage} alt="Fullscreen Gallery" className="max-w-full max-h-full object-contain shadow-2xl rounded-sm" />
+
+          <button 
+            onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+            className="absolute left-2 md:left-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div 
+            className="w-full h-full flex items-center justify-center px-4 md:px-24 py-12"
+            onClick={closeLightbox}
+          >
+            <img 
+              src={filteredImages[currentImageIndex].url} 
+              alt="Expanded view" 
+              className="max-w-full max-h-full object-contain shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          <button 
+            onClick={(e) => { e.stopPropagation(); goToNext(); }}
+            className="absolute right-2 md:right-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       )}
     </div>

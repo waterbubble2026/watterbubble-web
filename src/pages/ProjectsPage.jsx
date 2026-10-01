@@ -1,33 +1,34 @@
-import { useState } from 'react';
-import allImages from '../data/projectImages.json';
+import { useState, useEffect } from 'react';
 
 const ProjectsPage = () => {
-  const [activeTab, setActiveTab] = useState("Bubble Walls");
+  const [subcategories, setSubcategories] = useState([]);
+  const [activeTab, setActiveTab] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(8);
 
-  const categories = [
-    "Bubble Walls",
-    "Water Walls",
-    "Bubble Tubes",
-    "Lords",
-    "Commercial",
-    "Residential",
-    "Custom & Branding"
-  ];
+  useEffect(() => {
+    const fetchSubs = async () => {
+      try {
+        const res = await fetch('/api/subcategories');
+        const data = await res.json();
+        setSubcategories(data);
+        if (data.length > 0) {
+          setActiveTab(data[0].name);
+        }
+      } catch (err) {
+        console.error('Failed to fetch subcategories', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSubs();
+  }, []);
 
-  const filteredImages = allImages.filter(img => {
-    if (activeTab === "Bubble Tubes") return img.startsWith("projects/Bubble Tube/");
-    if (activeTab === "Bubble Walls") return img.startsWith("projects/Bubble Wall/");
-    if (activeTab === "Water Walls") return img.startsWith("projects/Water Wall/");
-    if (activeTab === "Lords") return img.startsWith("projects/Lords/");
-    if (activeTab === "Commercial") return img.startsWith("projects/Commercial/");
-    if (activeTab === "Residential") return img.startsWith("projects/Residential/");
-    if (activeTab === "Custom & Branding") return img.startsWith("projects/Custom/");
-    return false;
-  });
-
+  const activeSubcategory = subcategories.find(sub => sub.name === activeTab);
+  const filteredImages = activeSubcategory?.images || [];
   const displayedImages = filteredImages.slice(0, visibleCount);
 
   const openLightbox = (index) => {
@@ -90,40 +91,46 @@ const ProjectsPage = () => {
 
         {/* Filters */}
         <div className="mt-12 flex flex-wrap gap-4 justify-center md:justify-start">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => {
-                setActiveTab(category);
-                setVisibleCount(8);
-              }}
-              className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
-                activeTab === category
-                  ? "bg-[#5ea2d8] text-white"
-                  : "bg-white text-[#5ea2d8] hover:bg-gray-50"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+          {isLoading ? (
+            <p className="text-gray-500">Loading categories...</p>
+          ) : subcategories.length === 0 ? (
+            <p className="text-gray-500">No projects found.</p>
+          ) : (
+            subcategories.map((sub) => (
+              <button
+                key={sub._id}
+                onClick={() => {
+                  setActiveTab(sub.name);
+                  setVisibleCount(8);
+                }}
+                className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
+                  activeTab === sub.name
+                    ? "bg-[#5ea2d8] text-white"
+                    : "bg-white text-[#5ea2d8] hover:bg-gray-50"
+                }`}
+              >
+                {sub.name}
+              </button>
+            ))
+          )}
         </div>
       </section>
 
       {/* Projects Grid */}
       <section className="w-full max-w-screen-xl mx-auto px-6 md:px-12 pb-16">
-        {filteredImages.length === 0 ? (
+        {filteredImages.length === 0 && !isLoading ? (
           <div className="text-center text-gray-500 py-12">No images found for this category.</div>
         ) : (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {displayedImages.map((imgUrl, idx) => (
+              {displayedImages.map((img, idx) => (
                 <div 
-                  key={idx} 
+                  key={img._id} 
                   className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
                   onClick={() => openLightbox(idx)}
                 >
                   <img 
-                    src={`/${imgUrl}`} 
+                    src={img.url} 
                     alt={`Project ${idx}`} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                     loading="lazy"
@@ -148,7 +155,7 @@ const ProjectsPage = () => {
       </section>
 
       {/* Lightbox Modal */}
-      {lightboxOpen && (
+      {lightboxOpen && filteredImages.length > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
           {/* Close Button */}
           <button 
@@ -176,7 +183,7 @@ const ProjectsPage = () => {
             onClick={closeLightbox}
           >
             <img 
-              src={`/${filteredImages[currentImageIndex]}`} 
+              src={filteredImages[currentImageIndex].url} 
               alt="Expanded view" 
               className="max-w-full max-h-full object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
