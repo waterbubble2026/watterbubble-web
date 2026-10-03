@@ -1,17 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
 import Subcategory from './models/Subcategory.js';
 import LatestInstallation from './models/LatestInstallation.js';
-import dotenv from 'dotenv';
 
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -20,20 +15,48 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bubblewat
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-const uploadDir = path.join(__dirname, '../public/uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname.replace(/\\s+/g, '-'));
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+// Use memory storage for Vercel
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+// Helper to upload buffer to Cloudinary
+const uploadToCloudinary = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: 'bubblewater' },
+      (error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      }
+    );
+    uploadStream.end(buffer);
+  });
+};
+
+// Helper to delete from Cloudinary by URL
+const deleteFromCloudinary = async (imageUrl) => {
+  try {
+    if (!imageUrl.includes('cloudinary')) return;
+    // Extract public_id from URL: https://res.cloudinary.com/.../upload/v1234/bubblewater/abcde.jpg
+    const parts = imageUrl.split('/');
+    const filename = parts[parts.length - 1];
+    const publicId = `bubblewater/${filename.split('.')[0]}`;
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    console.error('Error deleting from Cloudinary:', error);
+  }
+};
+
 
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
@@ -90,16 +113,19 @@ app.put('/api/subcategories/:id', async (req, res) => {
 app.post('/api/subcategories/:id/images', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No image provided' });
-    const imageUrl = `/uploads/${req.file.filename}`;
     
     const sub = await Subcategory.findById(req.params.id);
     if (!sub) return res.status(404).json({ error: 'Not found' });
+    
+    const uploadResult = await uploadToCloudinary(req.file.buffer);
+    const imageUrl = uploadResult.secure_url;
     
     if (!sub.images) sub.images = [];
     sub.images.push({ url: imageUrl });
     await sub.save();
     res.status(201).json(sub);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -113,11 +139,7 @@ app.delete('/api/subcategories/:id/images/:imageId', async (req, res) => {
     const image = sub.images.id(req.params.imageId);
     if (!image) return res.status(404).json({ error: 'Image not found' });
     
-    const safeUrl = image.url.startsWith('/') ? image.url.slice(1) : image.url;
-    const imgPath = path.join(__dirname, '..', 'public', safeUrl);
-    if (fs.existsSync(imgPath)) {
-      fs.unlinkSync(imgPath);
-    }
+    await deleteFromCloudinary(image.url);
     
     sub.images.pull(req.params.imageId);
     await sub.save();
@@ -134,11 +156,7 @@ app.delete('/api/subcategories/:id', async (req, res) => {
     if (!sub) return res.status(404).json({ error: 'Not found' });
     
     for (let img of sub.images) {
-      const safeUrl = img.url.startsWith('/') ? img.url.slice(1) : img.url;
-      const imgPath = path.join(__dirname, '..', 'public', safeUrl);
-      if (fs.existsSync(imgPath)) {
-        fs.unlinkSync(imgPath);
-      }
+      await deleteFromCloudinary(img.url);
     }
     
     await Subcategory.findByIdAndDelete(req.params.id);
@@ -167,15 +185,18 @@ app.post('/api/latest-installations', upload.single('image'), async (req, res) =
     }
 
     if (!req.file) return res.status(400).json({ error: 'No image provided' });
-    const imageUrl = `/uploads/${req.file.filename}`;
     
     const { title, description } = req.body;
     if (!title || !description) return res.status(400).json({ error: 'Title and description required' });
+
+    const uploadResult = await uploadToCloudinary(req.file.buffer);
+    const imageUrl = uploadResult.secure_url;
 
     const item = new LatestInstallation({ title, description, imageUrl });
     await item.save();
     res.status(201).json(item);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -185,11 +206,7 @@ app.delete('/api/latest-installations/:id', async (req, res) => {
     const item = await LatestInstallation.findById(req.params.id);
     if (!item) return res.status(404).json({ error: 'Not found' });
     
-    const safeUrl = item.imageUrl.startsWith('/') ? item.imageUrl.slice(1) : item.imageUrl;
-    const imgPath = path.join(__dirname, '..', 'public', safeUrl);
-    if (fs.existsSync(imgPath)) {
-      fs.unlinkSync(imgPath);
-    }
+    await deleteFromCloudinary(item.imageUrl);
     
     await LatestInstallation.findByIdAndDelete(req.params.id);
     res.json({ success: true });
