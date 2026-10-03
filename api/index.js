@@ -30,7 +30,14 @@ const upload = multer({ storage });
 const uploadToCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: 'bubblewater' },
+      { 
+        folder: 'bubblewater',
+        transformation: [
+          { width: 1200, crop: 'limit' },
+          { quality: 'auto:good' },
+          { fetch_format: 'auto' }
+        ]
+      },
       (error, result) => {
         if (result) {
           resolve(result);
@@ -116,6 +123,10 @@ app.post('/api/subcategories/:id/images', upload.single('image'), async (req, re
     
     const sub = await Subcategory.findById(req.params.id);
     if (!sub) return res.status(404).json({ error: 'Not found' });
+    
+    if (sub.images && sub.images.length >= 25) {
+      return res.status(400).json({ error: 'Max limit of 25 images reached for this subcategory.' });
+    }
     
     const uploadResult = await uploadToCloudinary(req.file.buffer);
     const imageUrl = uploadResult.secure_url;

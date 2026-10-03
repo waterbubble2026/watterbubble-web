@@ -57,7 +57,7 @@ const LatestInstallationsSection = () => {
                 <p className="text-gray-500 text-sm mb-8 font-light leading-relaxed flex-grow line-clamp-3">
                   {item.description}
                 </p>
-                <button 
+                <button
                   onClick={() => openModal(item)}
                   className="bg-[#333333] hover:bg-black text-white text-xs font-semibold py-3 px-8 transition-colors tracking-widest uppercase rounded-sm mt-auto shadow-md"
                 >
@@ -73,7 +73,7 @@ const LatestInstallationsSection = () => {
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-300 flex flex-col max-h-[90vh]">
-            <button 
+            <button
               onClick={closeModal}
               className="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full p-2 transition-colors z-10"
             >
@@ -87,7 +87,7 @@ const LatestInstallationsSection = () => {
               </h3>
             </div>
             <div className="p-6 md:p-8 overflow-y-auto">
-              <p className="text-gray-700 leading-relaxed font-light whitespace-pre-wrap">
+              <p className="text-[#999999] leading-relaxed font-light whitespace-pre-wrap">
                 {selectedItem.description}
               </p>
             </div>

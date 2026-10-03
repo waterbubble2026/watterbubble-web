@@ -37,25 +37,25 @@ const ComingSoonPage = () => {
             Powered by Ninja Lights & Design
           </p>
         </div>
-        
+
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-6 tracking-[0.15em] uppercase drop-shadow-lg">
-          Coming <span className="text-[#5ea2d8] font-medium">Soon</span>
+          Coming <span className="text-[#1EA3DE] font-medium">Soon</span>
         </h1>
-        
+
         <p className="text-gray-300 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed mb-12 drop-shadow-md">
-          We are currently crafting a new digital experience. 
+          We are currently crafting a new digital experience.
           Our bespoke water features and bubble walls will be making a splash online very soon.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-2xl">
           <div className="flex flex-col items-center text-center">
-            <span className="text-[#5ea2d8] text-xs uppercase tracking-widest mb-3 font-bold">Location</span>
+            <span className="text-[#1EA3DE] text-xs uppercase tracking-widest mb-3 font-bold">Location</span>
             <span className="text-white text-lg md:text-xl font-light">Udaipur, Rajasthan, India</span>
           </div>
           <div className="hidden sm:block w-px h-16 bg-white/20"></div>
           <div className="flex flex-col items-center text-center">
-            <span className="text-[#5ea2d8] text-xs uppercase tracking-widest mb-3 font-bold">Call Us</span>
-            <a href="tel:+918947032360" className="text-white hover:text-[#5ea2d8] transition-colors text-lg md:text-xl font-light">+91 89470 32360</a>
+            <span className="text-[#1EA3DE] text-xs uppercase tracking-widest mb-3 font-bold">Call Us</span>
+            <a href="tel:+918947032360" className="text-white hover:text-[#1EA3DE] transition-colors text-lg md:text-xl font-light">+91 89470 32360</a>
           </div>
         </div>
       </div>

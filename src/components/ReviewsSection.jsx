@@ -92,12 +92,12 @@ const ReviewsSection = () => {
                   </div>
 
                   {/* Text */}
-                  <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-4 flex-grow">
+                  <p className="text-[#999999] text-sm mb-4 leading-relaxed line-clamp-4 flex-grow">
                     {review.text}
                   </p>
 
                   {/* Read more */}
-                  <a href="#" className="text-[#a0a0a0] hover:text-gray-700 text-xs mt-auto inline-block">Read more</a>
+                  <a href="#" className="text-[#a0a0a0] hover:text-[#999999] text-xs mt-auto inline-block">Read more</a>
                 </div>
               </div>
             ))}

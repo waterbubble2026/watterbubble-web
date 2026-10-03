@@ -9,7 +9,7 @@ const AdminPage = () => {
   const [activeTab, setActiveTab] = useState('Water Walls');
   const [subcategories, setSubcategories] = useState([]);
   const [latestInstallations, setLatestInstallations] = useState([]);
-  
+
   const [newSubName, setNewSubName] = useState('');
   const [newSubOrder, setNewSubOrder] = useState(0);
   const [selectedSubId, setSelectedSubId] = useState('');
@@ -133,7 +133,8 @@ const AdminPage = () => {
         e.target.reset();
         fetchSubcategories();
       } else {
-        alert('Failed to upload image');
+        const errorData = await res.json();
+        alert(errorData.error || 'Failed to upload image');
       }
     } catch (err) {
       console.error(err);
@@ -204,7 +205,7 @@ const AdminPage = () => {
       alert('Please provide title, description, and image');
       return;
     }
-    
+
     if (latestInstallations.length >= 4) {
       alert('Max limit reached. Delete one then add new.');
       return;
@@ -265,27 +266,27 @@ const AdminPage = () => {
           )}
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
-              <input 
-                type="email" 
+              <label className="block text-[#999999] text-sm font-bold mb-2">Email Address</label>
+              <input
+                type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required 
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-              <input 
-                type="password" 
+              <label className="block text-[#999999] text-sm font-bold mb-2">Password</label>
+              <input
+                type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required 
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
             >
               Sign In
@@ -317,11 +318,10 @@ const AdminPage = () => {
                 setSelectedSubId('');
                 setEditingSubId(null);
               }}
-              className={`py-3 px-6 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                activeTab === cat 
-                  ? 'border-blue-500 text-blue-600' 
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-3 px-6 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === cat
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-[#999999] hover:border-gray-300'
+                }`}
             >
               {cat}
             </button>
@@ -335,7 +335,7 @@ const AdminPage = () => {
             <div className="space-y-10">
               {/* Form for Latest Installations */}
               <form onSubmit={handleCreateLatestInstallation} className="bg-gray-50 p-6 rounded-lg border border-gray-200 max-w-2xl">
-                <h3 className="text-lg font-medium text-gray-700 mb-4">Add New Installation</h3>
+                <h3 className="text-lg font-medium text-[#999999] mb-4">Add New Installation</h3>
                 {latestInstallations.length >= 4 && (
                   <div className="mb-4 text-sm text-red-600 font-bold bg-red-100 p-3 rounded">
                     Max limit reached (4 items). Delete one then add new.
@@ -343,39 +343,39 @@ const AdminPage = () => {
                 )}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                    <input 
-                      type="text" 
+                    <label className="block text-sm font-medium text-[#999999] mb-2">Title</label>
+                    <input
+                      type="text"
                       value={liTitle}
                       onChange={e => setLiTitle(e.target.value)}
-                      className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                      className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                       required
                       disabled={latestInstallations.length >= 4}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <textarea 
+                    <label className="block text-sm font-medium text-[#999999] mb-2">Description</label>
+                    <textarea
                       value={liDesc}
                       onChange={e => setLiDesc(e.target.value)}
-                      className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 min-h-[100px]" 
+                      className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"
                       required
                       disabled={latestInstallations.length >= 4}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
-                    <input 
-                      type="file" 
+                    <label className="block text-sm font-medium text-[#999999] mb-2">Image</label>
+                    <input
+                      type="file"
                       accept="image/*"
                       onChange={e => setLiFile(e.target.files[0])}
-                      className="w-full px-3 py-2 border rounded-md bg-white text-sm" 
+                      className="w-full px-3 py-2 border rounded-md bg-white text-sm"
                       required
                       disabled={latestInstallations.length >= 4}
                     />
                   </div>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={isLiUploading || latestInstallations.length >= 4}
                     className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
                   >
@@ -395,7 +395,7 @@ const AdminPage = () => {
                         <h4 className="font-bold text-gray-800 mb-2 line-clamp-1">{item.title}</h4>
                         <p className="text-sm text-gray-600 mb-4 line-clamp-2">{item.description}</p>
                         <div className="mt-auto">
-                          <button 
+                          <button
                             onClick={() => handleDeleteLatestInstallation(item._id)}
                             className="w-full bg-red-50 text-red-600 hover:bg-red-100 py-2 rounded-md transition text-sm font-medium"
                           >
@@ -413,32 +413,32 @@ const AdminPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
                 {/* Create Subcategory Form */}
                 <form onSubmit={handleCreateSubcategory} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">1. Create New Subcategory</h3>
+                  <h3 className="text-lg font-medium text-[#999999] mb-4">1. Create New Subcategory</h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Subcategory Name</label>
-                      <input 
-                        type="text" 
+                      <label className="block text-sm font-medium text-[#999999] mb-2">Subcategory Name</label>
+                      <input
+                        type="text"
                         value={newSubName}
                         onChange={e => setNewSubName(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                        className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                         placeholder="e.g., Round Tubes"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Order (Lower numbers appear first)</label>
-                      <input 
-                        type="number" 
+                      <label className="block text-sm font-medium text-[#999999] mb-2">Order (Lower numbers appear first)</label>
+                      <input
+                        type="number"
                         value={newSubOrder}
                         onChange={e => setNewSubOrder(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" 
+                        className="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                         placeholder="0"
                         required
                       />
                     </div>
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
                     >
                       Create Subcategory
@@ -448,10 +448,10 @@ const AdminPage = () => {
 
                 {/* Upload Image Form */}
                 <form onSubmit={handleUploadImage} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">2. Upload Image to Subcategory</h3>
+                  <h3 className="text-lg font-medium text-[#999999] mb-4">2. Upload Image to Subcategory</h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Select Subcategory</label>
+                      <label className="block text-sm font-medium text-[#999999] mb-2">Select Subcategory</label>
                       <select
                         value={selectedSubId}
                         onChange={e => setSelectedSubId(e.target.value)}
@@ -465,17 +465,17 @@ const AdminPage = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Choose Image</label>
-                      <input 
-                        type="file" 
+                      <label className="block text-sm font-medium text-[#999999] mb-2">Choose Image</label>
+                      <input
+                        type="file"
                         accept="image/*"
                         onChange={e => setNewSubFile(e.target.files[0])}
-                        className="w-full px-3 py-2 border rounded-md bg-white text-sm" 
+                        className="w-full px-3 py-2 border rounded-md bg-white text-sm"
                         required
                       />
                     </div>
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       disabled={isUploading || !selectedSubId}
                       className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
                     >
@@ -488,7 +488,7 @@ const AdminPage = () => {
               {/* List of Subcategories and their Images */}
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-6">Existing Subcategories & Images</h3>
-                
+
                 {activeSubcategories.length === 0 ? (
                   <p className="text-gray-500 italic text-sm">No subcategories found for {activeTab}.</p>
                 ) : (
@@ -499,46 +499,46 @@ const AdminPage = () => {
                           <form onSubmit={(e) => handleUpdateSubcategory(e, sub._id)} className="mb-6 p-4 bg-gray-50 rounded-lg border flex flex-col md:flex-row gap-4 items-end">
                             <div className="flex-1">
                               <label className="block text-xs text-gray-500 mb-1 uppercase font-semibold">Edit Name</label>
-                              <input 
-                                type="text" 
-                                value={editSubName} 
-                                onChange={e => setEditSubName(e.target.value)} 
-                                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500" 
-                                required 
+                              <input
+                                type="text"
+                                value={editSubName}
+                                onChange={e => setEditSubName(e.target.value)}
+                                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+                                required
                               />
                             </div>
                             <div className="w-24">
                               <label className="block text-xs text-gray-500 mb-1 uppercase font-semibold">Order</label>
-                              <input 
-                                type="number" 
-                                value={editSubOrder} 
-                                onChange={e => setEditSubOrder(e.target.value)} 
-                                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500" 
-                                required 
+                              <input
+                                type="number"
+                                value={editSubOrder}
+                                onChange={e => setEditSubOrder(e.target.value)}
+                                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+                                required
                               />
                             </div>
                             <div className="flex gap-2">
                               <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Save</button>
-                              <button type="button" onClick={() => setEditingSubId(null)} className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">Cancel</button>
+                              <button type="button" onClick={() => setEditingSubId(null)} className="px-4 py-2 bg-gray-300 text-[#999999] rounded hover:bg-gray-400 transition">Cancel</button>
                             </div>
                           </form>
                         ) : (
                           <div className="flex justify-between items-center mb-4 border-b pb-4">
                             <div>
                               <h4 className="text-lg font-bold text-gray-800">
-                                {sub.name} 
+                                {sub.name}
                                 <span className="text-sm font-normal text-gray-500 ml-2">({sub.images?.length || 0} images)</span>
                               </h4>
                               <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full uppercase tracking-wider mt-1 inline-block">Order: {sub.order || 0}</span>
                             </div>
                             <div className="flex gap-2">
-                              <button 
+                              <button
                                 onClick={() => startEditing(sub)}
                                 className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center px-3 py-1 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
                               >
                                 Edit
                               </button>
-                              <button 
+                              <button
                                 onClick={() => handleDeleteSubcategory(sub._id)}
                                 className="text-red-600 hover:text-red-800 text-sm font-medium flex items-center px-3 py-1 bg-red-50 rounded-md hover:bg-red-100 transition-colors"
                               >

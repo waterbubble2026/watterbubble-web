@@ -51,7 +51,7 @@ const ProjectsPage = () => {
   return (
     <div className="w-full flex flex-col flex-grow bg-[#f4f4f4]">
       {/* Hero Section */}
-      <section 
+      <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
         style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '40vh' }}
       >
@@ -67,7 +67,7 @@ const ProjectsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           <div className="flex flex-col text-gray-600 text-sm leading-relaxed font-light">
             <p className="text-xl md:text-2xl text-gray-400 font-light leading-snug mb-6">
-              At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we believe that every project should be as unique as the space it enhances. That is why every <strong className="text-[#5ea2d8] font-semibold">water wall</strong>, water feature, <strong className="text-[#5ea2d8] font-semibold">bubble wall</strong>, and <strong className="text-[#5ea2d8] font-semibold">bubble tank</strong> we create is individually designed and handcrafted to meet the precise requirements, vision, and objectives of each client.
+              At <strong className="text-[#999999] font-bold">Water Bubble Walls</strong>, we believe that every project should be as unique as the space it enhances. That is why every <strong className="text-[#1EA3DE] font-semibold">water wall</strong>, water feature, <strong className="text-[#1EA3DE] font-semibold">bubble wall</strong>, and <strong className="text-[#1EA3DE] font-semibold">bubble tank</strong> we create is individually designed and handcrafted to meet the precise requirements, vision, and objectives of each client.
             </p>
             <p className="mb-4">
               Rather than offering off-the-shelf products, we take a bespoke approach to every commission, ensuring that each installation is tailored to complement its surroundings while delivering a striking visual impact.
@@ -103,11 +103,10 @@ const ProjectsPage = () => {
                   setActiveTab(sub.name);
                   setVisibleCount(8);
                 }}
-                className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
-                  activeTab === sub.name
-                    ? "bg-[#5ea2d8] text-white"
-                    : "bg-white text-[#5ea2d8] hover:bg-gray-50"
-                }`}
+                className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${activeTab === sub.name
+                  ? "bg-[#1EA3DE] text-white"
+                  : "bg-white text-[#1EA3DE] hover:bg-gray-50"
+                  }`}
               >
                 {sub.name}
               </button>
@@ -124,27 +123,27 @@ const ProjectsPage = () => {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {displayedImages.map((img, idx) => (
-                <div 
-                  key={img._id} 
+                <div
+                  key={img._id}
                   className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
                   onClick={() => openLightbox(idx)}
                 >
-                  <img 
-                    src={img.url} 
-                    alt={`Project ${idx}`} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  <img
+                    src={img.url}
+                    alt={`Project ${idx}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                     decoding="async"
                   />
                 </div>
               ))}
             </div>
-            
+
             {visibleCount < filteredImages.length && (
               <div className="mt-12 flex justify-center">
                 <button
                   onClick={() => setVisibleCount(prev => prev + 8)}
-                  className="px-8 py-3 bg-[#5ea2d8] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
+                  className="px-8 py-3 bg-[#1EA3DE] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
                 >
                   Load More
                 </button>
@@ -158,8 +157,8 @@ const ProjectsPage = () => {
       {lightboxOpen && filteredImages.length > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
           {/* Close Button */}
-          <button 
-            onClick={closeLightbox} 
+          <button
+            onClick={closeLightbox}
             className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,7 +167,7 @@ const ProjectsPage = () => {
           </button>
 
           {/* Previous Button */}
-          <button 
+          <button
             onClick={(e) => { e.stopPropagation(); goToPrev(); }}
             className="absolute left-2 md:left-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >
@@ -178,20 +177,20 @@ const ProjectsPage = () => {
           </button>
 
           {/* Main Content (Image/Video) */}
-          <div 
+          <div
             className="w-full h-full flex items-center justify-center px-4 md:px-24 py-12"
             onClick={closeLightbox}
           >
-            <img 
-              src={filteredImages[currentImageIndex].url} 
-              alt="Expanded view" 
+            <img
+              src={filteredImages[currentImageIndex].url}
+              alt="Expanded view"
               className="max-w-full max-h-full object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
 
           {/* Next Button */}
-          <button 
+          <button
             onClick={(e) => { e.stopPropagation(); goToNext(); }}
             className="absolute right-2 md:right-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >

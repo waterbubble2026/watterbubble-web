@@ -31,7 +31,7 @@ const VideosPage = () => {
   return (
     <div className="w-full flex flex-col flex-grow bg-[#f4f4f4]">
       {/* Hero Section */}
-      <section 
+      <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
         style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '40vh' }}
       >
@@ -47,7 +47,7 @@ const VideosPage = () => {
         <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div>
             <h2 className="text-3xl md:text-4xl text-gray-400 font-light leading-snug mb-6">
-              <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> are the premier designer and installer of <strong className="text-gray-700 font-bold">interior water features</strong> and have installed our water features at hundreds of premier venues in the India.
+              <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> are the premier designer and installer of <strong className="text-[#999999] font-bold">interior water features</strong> and have installed our water features at hundreds of premier venues in the India.
             </h2>
           </div>
           <div className="flex flex-col justify-center space-y-4">
@@ -55,7 +55,7 @@ const VideosPage = () => {
               Every water feature is uniquely designed and crafted at our water feature design studio and factory in Udaipur, Rajasthan.
             </p>
             <p className="text-gray-600 text-sm leading-relaxed font-light">
-              Our <a href="https://www.youtube.com/channel/UCSxxYXBWapZMoxWFNxCJ9fw" target="_blank" rel="noopener noreferrer" className="text-[#5ea2d8] hover:underline font-medium">Youtube channel</a> is a great showcase of our work and we try and publish new projects regularly. Please subscribe to our channel to keep in touch with our new projects as they come online.
+              Our <a href="https://www.youtube.com/channel/UCSxxYXBWapZMoxWFNxCJ9fw" target="_blank" rel="noopener noreferrer" className="text-[#1EA3DE] hover:underline font-medium">Youtube channel</a> is a great showcase of our work and we try and publish new projects regularly. Please subscribe to our channel to keep in touch with our new projects as they come online.
             </p>
           </div>
         </div>
@@ -69,22 +69,22 @@ const VideosPage = () => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
               {displayedVideos.map((video, idx) => (
-                <a 
-                  href={video.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  key={idx} 
+                <a
+                  href={video.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={idx}
                   className="flex flex-col group cursor-pointer bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 relative"
                 >
                   <div className="w-full aspect-[9/16] relative overflow-hidden bg-gray-900">
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title} 
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                       loading="lazy"
                       decoding="async"
                     />
-                    
+
                     {/* Gradient Overlay for better text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
@@ -97,7 +97,7 @@ const VideosPage = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Title Overlay on top of image at the bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
                     <h3 className="font-bold text-white text-sm line-clamp-2 leading-snug drop-shadow-md">
@@ -107,12 +107,12 @@ const VideosPage = () => {
                 </a>
               ))}
             </div>
-            
+
             {visibleCount < videos.length && (
               <div className="mt-16 flex justify-center">
                 <button
                   onClick={() => setVisibleCount(prev => prev + 4)}
-                  className="px-8 py-3 bg-[#5ea2d8] text-white font-semibold rounded shadow-md hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
+                  className="px-8 py-3 bg-[#1EA3DE] text-white font-semibold rounded shadow-md hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
                 >
                   Load More
                 </button>

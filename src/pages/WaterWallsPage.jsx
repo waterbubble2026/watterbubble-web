@@ -90,7 +90,7 @@ const WaterWallsPage = () => {
             {/* Left Column */}
             <div className="flex flex-col space-y-6 text-gray-600 text-sm leading-relaxed font-light">
               <p className="text-xl md:text-2xl text-gray-400 font-light leading-snug">
-                <strong className="text-gray-700 font-bold">Water walls</strong> and <strong className="text-gray-700 font-bold">waterfall features</strong> create powerful visual statements that instantly enhance the atmosphere of any interior environment.
+                <strong className="text-[#999999] font-bold">Water walls</strong> and <strong className="text-[#999999] font-bold">waterfall features</strong> create powerful visual statements that instantly enhance the atmosphere of any interior environment.
               </p>
               <p>
                 Combining the natural movement of flowing water with lighting, texture, and contemporary design, these installations bring a sense of luxury, tranquility, and sophistication to commercial spaces.
@@ -99,18 +99,18 @@ const WaterWallsPage = () => {
                 Perfect for reception areas, entrance lobbies, VIP lounges, hotels, restaurants, spas, retail environments, and high-end bar installations, bespoke water walls provide a striking focal point that captures attention while creating a calming and immersive ambience. Whether used as a standalone architectural feature or integrated into a wider interior design scheme, flowing water introduces movement, sound, and visual depth that transforms the overall feel of a space.
               </p>
               <p>
-                At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-gray-700 font-bold">water walls</strong> and <strong className="text-gray-700 font-bold">waterfalls</strong> tailored entirely to the client's vision, environment, and technical requirements. We produce installations of every scale, from compact decorative features to large architectural statement pieces for luxury commercial interiors.
+                At <strong className="text-[#999999] font-bold">Water Bubble Walls</strong>, we specialise in the design, manufacture, and installation of custom-built <strong className="text-[#999999] font-bold">water walls</strong> and <strong className="text-[#999999] font-bold">waterfalls</strong> tailored entirely to the client's vision, environment, and technical requirements. We produce installations of every scale, from compact decorative features to large architectural statement pieces for luxury commercial interiors.
               </p>
               <p>
                 Every water feature is individually made to measure at our Udaipur, Rajasthan studio using premium materials, precision engineering, and high-quality components to ensure exceptional craftsmanship, durability, and long-term reliability. We offer complete flexibility in size, finishes, lighting effects, branding integration, and water flow design, allowing each installation to complement its surroundings perfectly.
               </p>
               <p>
-                With over <strong className="text-gray-700 font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the India, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
+                With over <strong className="text-[#999999] font-bold italic">21 years of experience</strong> creating bespoke commercial water features across the India, <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> delivers fully managed solutions from initial concept and design through to manufacture and final installation.
               </p>
 
               {/* Contact Button */}
               <div className="mt-8 pt-4">
-                <Link to="/contact" className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
+                <Link to="/contact" className="border-2 border-[#1EA4DE] text-[#1EA4DE] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#1EA4DE] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
               </div>
             </div>
 
@@ -125,10 +125,10 @@ const WaterWallsPage = () => {
 
               <div className="mt-8 text-gray-600 text-sm leading-relaxed font-light space-y-4">
                 <p>
-                  Our <strong className="text-gray-700 font-bold">water walls</strong> are designed not only to create impressive visual impact, but also to provide dependable performance and low-maintenance operation for years to come.
+                  Our <strong className="text-[#999999] font-bold">water walls</strong> are designed not only to create impressive visual impact, but also to provide dependable performance and low-maintenance operation for years to come.
                 </p>
                 <p>
-                  Whether you require a contemporary glass water wall, a textured cascading feature, or a large-scale architectural <strong className="text-gray-700 font-bold">waterfall installation</strong>, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
+                  Whether you require a contemporary glass water wall, a textured cascading feature, or a large-scale architectural <strong className="text-[#999999] font-bold">waterfall installation</strong>, <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> creates bespoke solutions designed to elevate interiors and create unforgettable spaces.
                 </p>
               </div>
             </div>
@@ -153,11 +153,10 @@ const WaterWallsPage = () => {
                     setActiveTab(sub.name);
                     setVisibleCount(10);
                   }}
-                  className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${
-                    activeTab === sub.name
-                      ? "bg-[#5ea2d8] text-white"
-                      : "bg-white text-[#5ea2d8] hover:bg-gray-50"
-                  }`}
+                  className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${activeTab === sub.name
+                    ? "bg-[#1EA3DE] text-white"
+                    : "bg-white text-[#1EA3DE] hover:bg-gray-50"
+                    }`}
                 >
                   {sub.name}
                 </button>
@@ -171,27 +170,27 @@ const WaterWallsPage = () => {
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {displayedImages.map((img, idx) => (
-                    <div 
-                      key={img._id} 
+                    <div
+                      key={img._id}
                       className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
                       onClick={() => openLightbox(idx)}
                     >
-                      <img 
-                        src={img.url} 
-                        alt={`${activeTab} ${idx + 1}`} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      <img
+                        src={img.url}
+                        alt={`${activeTab} ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                         decoding="async"
                       />
                     </div>
                   ))}
                 </div>
-                
+
                 {visibleCount < filteredImages.length && (
                   <div className="mt-12 flex justify-center">
                     <button
                       onClick={() => setVisibleCount(prev => prev + 10)}
-                      className="px-8 py-3 bg-[#5ea2d8] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
+                      className="px-8 py-3 bg-[#1EA3DE] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
                     >
                       Load More
                     </button>
@@ -206,8 +205,8 @@ const WaterWallsPage = () => {
       {/* Lightbox Modal */}
       {lightboxOpen && filteredImages.length > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-          <button 
-            onClick={closeLightbox} 
+          <button
+            onClick={closeLightbox}
             className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -215,7 +214,7 @@ const WaterWallsPage = () => {
             </svg>
           </button>
 
-          <button 
+          <button
             onClick={(e) => { e.stopPropagation(); goToPrev(); }}
             className="absolute left-2 md:left-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >
@@ -224,19 +223,19 @@ const WaterWallsPage = () => {
             </svg>
           </button>
 
-          <div 
+          <div
             className="w-full h-full flex items-center justify-center px-4 md:px-24 py-12"
             onClick={closeLightbox}
           >
-            <img 
-              src={filteredImages[currentImageIndex].url} 
-              alt="Expanded view" 
+            <img
+              src={filteredImages[currentImageIndex].url}
+              alt="Expanded view"
               className="max-w-full max-h-full object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
 
-          <button 
+          <button
             onClick={(e) => { e.stopPropagation(); goToNext(); }}
             className="absolute right-2 md:right-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
           >

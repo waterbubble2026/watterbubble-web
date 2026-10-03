@@ -20,45 +20,45 @@ const AboutPage = () => {
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '16px 16px' }}></div>
 
         <div className="max-w-screen-xl mx-auto px-6 md:px-12 relative z-10 flex flex-col">
-          <h2 className="text-[#88cdeb] text-4xl md:text-5xl font-light mb-10">
+          <h2 className="text-[#1EA4DE] text-4xl md:text-[48px] font-light mb-10">
             Inside Our Bubble
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 text-gray-600 text-sm leading-relaxed font-light">
             {/* Left Column */}
             <div className="flex flex-col space-y-6">
-              <p className="text-xl md:text-2xl text-gray-400 font-light leading-snug">
-                <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> is a leading specialist in India in the design, manufacture, and installation of bespoke <strong className="text-gray-700 font-bold">interior water features</strong> for commercial, hospitality, and luxury environments.
+              <p className="text-xl md:text-2xl text-black font-light leading-snug">
+                <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> is a leading specialist in India in the design, manufacture, and installation of bespoke <strong className="text-[#999999] font-bold">interior water features</strong> for commercial, hospitality, and luxury environments.
               </p>
-              <p>
+              <p className="text-black text-[16px]">
                 Based in Udaipur, Rajasthan, we have over 21 years of industry experience creating high-quality custom water installations for clients throughout the India.
               </p>
-              <p>
-                We specialise in producing visually striking, fully bespoke water features, including custom <strong className="text-gray-700 font-bold">water walls, bubble walls, bubble tanks, bubble tubes, indoor water walls</strong>. Our work is trusted by leading brands, hotels, restaurants, bars, retail spaces, exhibition venues, and corporate environments looking to create memorable interior experiences that leave a lasting impression.
+              <p className="text-black text-[16px]">
+                We specialise in producing visually striking, fully bespoke water features, including custom <strong className="text-[#999999] font-bold">water walls, bubble walls, bubble tanks, bubble tubes, indoor water walls</strong>. Our work is trusted by leading brands, hotels, restaurants, bars, retail spaces, exhibition venues, and corporate environments looking to create memorable interior experiences that leave a lasting impression.
               </p>
-              <p>
+              <p className="text-black text-[16px]">
                 Every project is carefully designed and manufactured in-house at our Udaipur, Rajasthan studio, allowing us to maintain complete control over quality, craftsmanship, and technical performance. By combining innovative design concepts with precision engineering and durable, high-quality materials, we create water features that are both visually impressive and built for long-term reliability.
               </p>
-              <p>
-                At <strong className="text-gray-700 font-bold">Water Bubble Walls</strong>, we understand that every space is unique. That is why every installation is individually tailored to suit the client's vision, branding, spatial requirements, and technical specifications.
+              <p className="text-black text-[16px]">
+                At <strong className="text-[#999999] font-bold">Water Bubble Walls</strong>, we understand that every space is unique. That is why every installation is individually tailored to suit the client's vision, branding, spatial requirements, and technical specifications.
               </p>
             </div>
 
             {/* Right Column */}
             <div className="flex flex-col space-y-6">
-              <p>
+              <p className="text-black text-[16px]">
                 From contemporary reception water walls and feature cascades to bespoke bubble systems and statement bar displays, our team works closely with clients to deliver installations that enhance atmosphere, improve customer experience, and elevate interior design.
               </p>
-              <p>
-                Our bespoke <strong className="text-gray-700 font-bold">commercial water features</strong> are widely used across hotels, restaurants, bars, reception areas, spas, showrooms, retail environments, offices, and exhibition spaces, helping businesses create immersive and luxurious interiors that stand out from the competition.
+              <p className="text-black text-[16px]">
+                Our bespoke <strong className="text-[#999999] font-bold">commercial water features</strong> are widely used across hotels, restaurants, bars, reception areas, spas, showrooms, retail environments, offices, and exhibition spaces, helping businesses create immersive and luxurious interiors that stand out from the competition.
               </p>
-              <p>
-                From the initial concept and design consultation through to manufacture, delivery, and final installation, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> provides a complete fully managed service. Our experienced team is committed to delivering exceptional workmanship, innovative solutions, and outstanding customer service on every project, regardless of size or complexity.
+              <p className="text-black text-[16px]">
+                From the initial concept and design consultation through to manufacture, delivery, and final installation, <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> provides a complete fully managed service. Our experienced team is committed to delivering exceptional workmanship, innovative solutions, and outstanding customer service on every project, regardless of size or complexity.
               </p>
-              <p>
-                Whether you require a stunning statement water wall, a custom-built bubble feature, an illuminated back bar display, or a complete commercial water feature installation, <strong className="text-gray-700 font-bold">Water Bubble Walls</strong> delivers bespoke solutions designed to transform interiors and create unforgettable visual impact.
+              <p className="text-black text-[16px]">
+                Whether you require a stunning statement water wall, a custom-built bubble feature, an illuminated back bar display, or a complete commercial water feature installation, <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> delivers bespoke solutions designed to transform interiors and create unforgettable visual impact.
               </p>
-              <p className="text-[#88cdeb] text-2xl md:text-3xl font-light mt-4">
+              <p className="text-[#1EA4DE] text-2xl md:text-3xl font-light mt-4">
                 Who said water has no taste!
               </p>
             </div>
@@ -74,7 +74,7 @@ const AboutPage = () => {
 
           {/* Contact Button */}
           <div className="mt-12">
-            <Link to="/contact" className="border-2 border-[#88cdeb] text-[#88cdeb] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#88cdeb] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
+            <Link to="/contact" className="border-2 border-[#1EA4DE] text-[#1EA4DE] font-semibold tracking-widest text-xs uppercase py-3 px-8 rounded-sm hover:bg-[#1EA4DE] hover:text-white transition-colors text-center inline-block">Contact Us</Link>
           </div>
         </div>
       </section>

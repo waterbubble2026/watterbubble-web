@@ -5,7 +5,7 @@ const ContactPage = () => {
   const handleWhatsAppSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    
+
     // Checkboxes
     const interests = [];
     if (formData.get('interest_tanks')) interests.push('Bubble Tanks');
@@ -36,7 +36,7 @@ ${formData.get('message')}
   return (
     <div className="w-full flex flex-col flex-grow">
       {/* Hero Section */}
-      <section 
+      <section
         className="w-full relative bg-cover bg-center flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-24"
         style={{ backgroundImage: "url('/bubble-cover.png')", minHeight: '40vh' }}
       >
@@ -50,10 +50,10 @@ ${formData.get('message')}
       <section className="w-full relative bg-[#f4f4f4] py-16 md:py-24">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '16px 16px' }}></div>
-        
+
         <div className="max-w-screen-xl mx-auto px-6 md:px-12 relative z-10 flex flex-col">
-          
-          <h2 className="text-[#88cdeb] text-4xl md:text-5xl font-light mb-10">
+
+          <h2 className="text-[#1EA4DE] text-4xl md:text-5xl font-light mb-10">
             Water Bubble Walls
           </h2>
 
@@ -64,7 +64,7 @@ ${formData.get('message')}
                 At the heart of our business is a commitment to delivering exceptional customer service and outstanding workmanship on every project we undertake. We understand that choosing the right company for your project is an important decision, which is why we place such a strong emphasis on providing a personal, professional, and reliable service from start to finish.
               </p>
               <p>
-                Unlike many larger organisations where <Link to="/projects" className="text-[#5ea2d8] hover:underline">projects</Link> are passed between different departments or managers, every project we complete is personally overseen by our team. Whether the project is a small domestic installation or a large scale commercial undertaking, we remain actively involved throughout the entire process. This hands-on approach ensures that every aspect of the project receives the attention it deserves and that our high standards are maintained at every stage.
+                Unlike many larger organisations where <Link to="/projects" className="text-[#1EA3DE] hover:underline">projects</Link> are passed between different departments or managers, every project we complete is personally overseen by our team. Whether the project is a small domestic installation or a large scale commercial undertaking, we remain actively involved throughout the entire process. This hands-on approach ensures that every aspect of the project receives the attention it deserves and that our high standards are maintained at every stage.
               </p>
             </div>
             <div className="flex flex-col space-y-4">
@@ -85,7 +85,7 @@ ${formData.get('message')}
             </div>
           </div>
 
-          <h2 className="text-[#88cdeb] text-4xl md:text-5xl font-light mb-4">
+          <h2 className="text-[#1EA4DE] text-4xl md:text-5xl font-light mb-4">
             Contact
           </h2>
           <p className="text-gray-500 text-xs mb-8">* indicates required fields</p>
@@ -93,20 +93,20 @@ ${formData.get('message')}
           {/* Form */}
           <form className="mb-20" onSubmit={handleWhatsAppSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input type="text" name="firstName" placeholder="First Name *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
-              <input type="text" name="surname" placeholder="Surname *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
+              <input type="text" name="firstName" placeholder="First Name *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
+              <input type="text" name="surname" placeholder="Surname *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input type="text" name="company" placeholder="Company Name" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
-              <input type="text" name="location" placeholder="Location" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
+              <input type="text" name="company" placeholder="Company Name" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
+              <input type="text" name="location" placeholder="Location" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <input type="email" name="email" placeholder="Email *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
-              <input type="tel" name="tel" placeholder="Telephone" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
-              <input type="tel" name="mobile" placeholder="Mobile *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm" />
+              <input type="email" name="email" placeholder="Email *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
+              <input type="tel" name="tel" placeholder="Telephone" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
+              <input type="tel" name="mobile" placeholder="Mobile *" required className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm" />
             </div>
             <div className="mb-8">
-              <textarea name="message" placeholder="Message / Project Brief *" required rows="6" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#88cdeb] outline-none rounded-sm shadow-sm resize-none"></textarea>
+              <textarea name="message" placeholder="Message / Project Brief *" required rows="6" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm resize-none"></textarea>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -115,19 +115,19 @@ ${formData.get('message')}
                 <h4 className="font-bold text-sm text-gray-800 mb-4">Interest Areas</h4>
                 <div className="grid grid-cols-2 gap-3 text-xs text-gray-600">
                   <label className="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" name="interest_tanks" className="form-checkbox text-[#5ea2d8] rounded-sm focus:ring-[#5ea2d8]" />
+                    <input type="checkbox" name="interest_tanks" className="form-checkbox text-[#1EA3DE] rounded-sm focus:ring-[#1EA3DE]" />
                     <span>Bubble Tanks</span>
                   </label>
                   <label className="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" name="interest_tubes" className="form-checkbox text-[#5ea2d8] rounded-sm focus:ring-[#5ea2d8]" />
+                    <input type="checkbox" name="interest_tubes" className="form-checkbox text-[#1EA3DE] rounded-sm focus:ring-[#1EA3DE]" />
                     <span>Bubble Tubes</span>
                   </label>
                   <label className="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" name="interest_bwalls" className="form-checkbox text-[#5ea2d8] rounded-sm focus:ring-[#5ea2d8]" />
+                    <input type="checkbox" name="interest_bwalls" className="form-checkbox text-[#1EA3DE] rounded-sm focus:ring-[#1EA3DE]" />
                     <span>Bubble Walls</span>
                   </label>
                   <label className="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" name="interest_wwalls" className="form-checkbox text-[#5ea2d8] rounded-sm focus:ring-[#5ea2d8]" />
+                    <input type="checkbox" name="interest_wwalls" className="form-checkbox text-[#1EA3DE] rounded-sm focus:ring-[#1EA3DE]" />
                     <span>Water Walls</span>
                   </label>
                 </div>
@@ -137,13 +137,13 @@ ${formData.get('message')}
               <div>
                 <h4 className="font-bold text-sm text-gray-800 mb-4">If you have any drawings or images, please upload....</h4>
                 <div className="flex items-center">
-                  <input type="file" name="attachment" accept="image/*" className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300" />
+                  <input type="file" name="attachment" accept="image/*" className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-[#999999] hover:file:bg-gray-300" />
                 </div>
-                <p className="text-[#5ea2d8] text-xs mt-4">Max. file size: 1 GB. (Only Images allowed)</p>
+                <p className="text-[#1EA3DE] text-xs mt-4">Max. file size: 1 GB. (Only Images allowed)</p>
               </div>
             </div>
 
-            <button type="submit" className="bg-[#5ea2d8] hover:bg-[#4a8fc3] text-white text-xs font-bold py-3 px-8 rounded-sm uppercase tracking-widest transition-colors shadow-md">
+            <button type="submit" className="bg-[#1EA3DE] hover:bg-[#4a8fc3] text-white text-xs font-bold py-3 px-8 rounded-sm uppercase tracking-widest transition-colors shadow-md">
               SEND VIA WHATSAPP
             </button>
           </form>
@@ -155,13 +155,13 @@ ${formData.get('message')}
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center h-full text-gray-600 text-sm font-light space-y-4">
               <p>
-                For more information or to arrange a no obligation estimate please get in touch with us on <a href="tel:+918947032360" className="text-[#5ea2d8] hover:underline">+91 89470 32360</a>.
+                For more information or to arrange a no obligation estimate please get in touch with us on <a href="tel:+918947032360" className="text-[#1EA3DE] hover:underline">+91 89470 32360</a>.
               </p>
               <div>
                 <p className="font-bold text-gray-800">Water Bubble Walls</p>
                 <p>Udaipur, Rajasthan, India</p>
                 <p>
-                  t: <a href="tel:+918947032360" className="hover:text-gray-800 transition-colors">+91 89470 32360</a> | <a href="mailto:info@waterbubblewalls.com" className="text-[#5ea2d8] hover:underline">info@waterbubblewalls.com</a>
+                  t: <a href="tel:+918947032360" className="hover:text-gray-800 transition-colors">+91 89470 32360</a> | <a href="mailto:info@waterbubblewalls.com" className="text-[#1EA3DE] hover:underline">info@waterbubblewalls.com</a>
                 </p>
               </div>
             </div>
