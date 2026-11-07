@@ -84,14 +84,18 @@ const App = () => {
       {/* Navigation */}
       {!currentPath.startsWith('/admin') && (
         <nav
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-8' : 'bg-transparent py-6'
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3 md:py-4' : 'bg-transparent py-4 md:py-6'
             }`}
         >
           <div className="max-w-screen-2xl mx-auto px-6 md:px-12 flex justify-between items-center">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/">
-                <img src="/logo.png" alt="Water Bubble Walls" className="h-10 object-contain" />
+                <img
+                  src="/logo.png"
+                  alt="Water Bubble Wall Logo with Bubbles"
+                  className="h-14 sm:h-16 md:h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
+                />
               </Link>
             </div>
 

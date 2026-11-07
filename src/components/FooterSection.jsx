@@ -7,7 +7,11 @@ const FooterSection = () => {
 
         {/* Logo Area */}
         <div className="flex items-center space-x-2">
-          <img src="/logo.png" alt="Water Bubble Walls" className="h-12 object-contain" />
+          <img
+            src="/logo.png"
+            alt="Water Bubble Wall Logo with Bubbles"
+            className="h-16 md:h-20 w-auto object-contain drop-shadow"
+          />
         </div>
 
         {/* Address & Contact */}

@@ -1,11 +1,12 @@
 import FeaturesSection from '../components/FeaturesSection';
 import ReviewsSection from '../components/ReviewsSection';
 import LatestInstallationsSection from '../components/LatestInstallationsSection';
+import HomeImageCarousel from '../components/HomeImageCarousel';
 
 const HomeContent = ({ images }) => (
   <>
     {/* Main Content */}
-    <main className="relative z-10 pt-32 pb-20 px-6 md:px-12 max-w-screen-2xl mx-auto min-h-screen flex items-center">
+    <main className="relative z-10 pt-32 md:pt-36 pb-20 px-6 md:px-12 max-w-screen-2xl mx-auto min-h-screen flex items-center">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start w-full">
 
         {/* Left Column: Text Content */}
@@ -39,24 +40,9 @@ const HomeContent = ({ images }) => (
           </div>
         </div>
 
-        {/* Right Column: Images Grid */}
+        {/* Right Column: Large Carousel Showcase */}
         <div className="flex flex-col h-full justify-center lg:col-span-1">
-          <div className="grid grid-cols-2 gap-4 md:gap-6">
-            {images.map((src, index) => (
-              <div
-                key={index}
-                className="rounded-2xl overflow-hidden aspect-[4/5] md:aspect-square shadow-xl group cursor-pointer border border-white/10 relative"
-              >
-                {/* Inner shadow/glow to match design */}
-                <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10 pointer-events-none rounded-2xl"></div>
-                <img
-                  src={src}
-                  alt={`Project ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-            ))}
-          </div>
+          <HomeImageCarousel images={images} interval={2500} />
 
           {/* Footer Text under images */}
           <div className="mt-8 text-center text-white text-xs md:text-sm tracking-[0.2em] uppercase">
