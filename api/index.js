@@ -116,27 +116,43 @@ app.put('/api/subcategories/:id', async (req, res) => {
   }
 });
 
-// Add image to subcategory
-app.post('/api/subcategories/:id/images', upload.single('image'), async (req, res) => {
+// Add images to subcategory (supports multiple uploads)
+app.post('/api/subcategories/:id/images', upload.array('images', 25), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ error: 'No image provided' });
+    const files = req.files || (req.file ? [req.file] : []);
+    if (!files || files.length === 0) {
+      return res.status(400).json({ error: 'No image(s) provided' });
+    }
     
     const sub = await Subcategory.findById(req.params.id);
     if (!sub) return res.status(404).json({ error: 'Not found' });
     
-    if (sub.images && sub.images.length >= 25) {
+    if (!sub.images) sub.images = [];
+    const currentCount = sub.images.length;
+    const availableSlots = 25 - currentCount;
+    
+    if (availableSlots <= 0) {
       return res.status(400).json({ error: 'Max limit of 25 images reached for this subcategory.' });
     }
     
-    const uploadResult = await uploadToCloudinary(req.file.buffer);
-    const imageUrl = uploadResult.secure_url;
+    if (files.length > availableSlots) {
+      return res.status(400).json({ 
+        error: `Cannot upload ${files.length} images. Only ${availableSlots} slot(s) remaining for this subcategory (maximum 25).` 
+      });
+    }
     
-    if (!sub.images) sub.images = [];
-    sub.images.push({ url: imageUrl });
+    // Upload all files in parallel to Cloudinary
+    const uploadResults = await Promise.all(
+      files.map(file => uploadToCloudinary(file.buffer))
+    );
+    
+    const newImages = uploadResults.map(result => ({ url: result.secure_url }));
+    sub.images.push(...newImages);
     await sub.save();
+    
     res.status(201).json(sub);
   } catch (error) {
-    console.error(error);
+    console.error('Error uploading subcategory images:', error);
     res.status(500).json({ error: error.message });
   }
 });

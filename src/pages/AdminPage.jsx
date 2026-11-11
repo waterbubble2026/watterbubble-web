@@ -13,7 +13,7 @@ const AdminPage = () => {
   const [newSubName, setNewSubName] = useState('');
   const [newSubOrder, setNewSubOrder] = useState(0);
   const [selectedSubId, setSelectedSubId] = useState('');
-  const [newSubFile, setNewSubFile] = useState(null);
+  const [newSubFiles, setNewSubFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
 
   // Editing state for subcategory
@@ -114,14 +114,30 @@ const AdminPage = () => {
 
   const handleUploadImage = async (e) => {
     e.preventDefault();
-    if (!selectedSubId || !newSubFile) {
-      alert('Please select a subcategory and an image');
+    if (!selectedSubId || newSubFiles.length === 0) {
+      alert('Please select a subcategory and at least one image');
+      return;
+    }
+
+    const targetSub = subcategories.find(s => s._id === selectedSubId);
+    const currentCount = targetSub?.images?.length || 0;
+    const availableSlots = 25 - currentCount;
+
+    if (availableSlots <= 0) {
+      alert('This subcategory has already reached the maximum limit of 25 images.');
+      return;
+    }
+
+    if (newSubFiles.length > availableSlots) {
+      alert(`Cannot upload ${newSubFiles.length} images. Only ${availableSlots} slot(s) remaining for this subcategory (maximum 25).`);
       return;
     }
 
     setIsUploading(true);
     const formData = new FormData();
-    formData.append('image', newSubFile);
+    newSubFiles.forEach(file => {
+      formData.append('images', file);
+    });
 
     try {
       const res = await fetch(`/api/subcategories/${selectedSubId}/images`, {
@@ -129,16 +145,16 @@ const AdminPage = () => {
         body: formData
       });
       if (res.ok) {
-        setNewSubFile(null);
+        setNewSubFiles([]);
         e.target.reset();
         fetchSubcategories();
       } else {
         const errorData = await res.json();
-        alert(errorData.error || 'Failed to upload image');
+        alert(errorData.error || 'Failed to upload image(s)');
       }
     } catch (err) {
       console.error(err);
-      alert('Error uploading image');
+      alert('Error uploading image(s)');
     }
     setIsUploading(false);
   };
@@ -448,7 +464,7 @@ const AdminPage = () => {
 
                 {/* Upload Image Form */}
                 <form onSubmit={handleUploadImage} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                  <h3 className="text-lg font-medium text-[#999999] mb-4">2. Upload Image to Subcategory</h3>
+                  <h3 className="text-lg font-medium text-[#999999] mb-4">2. Upload Images to Subcategory</h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-[#999999] mb-2">Select Subcategory</label>
@@ -460,26 +476,38 @@ const AdminPage = () => {
                       >
                         <option value="" disabled>Select a subcategory...</option>
                         {activeSubcategories.map(sub => (
-                          <option key={sub._id} value={sub._id}>{sub.name}</option>
+                          <option key={sub._id} value={sub._id}>
+                            {sub.name} ({sub.images?.length || 0}/25 images)
+                          </option>
                         ))}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[#999999] mb-2">Choose Image</label>
+                      <label className="block text-sm font-medium text-[#999999] mb-2">
+                        Choose Images (Select multiple)
+                      </label>
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={e => setNewSubFile(e.target.files[0])}
+                        multiple
+                        onChange={e => setNewSubFiles(Array.from(e.target.files || []))}
                         className="w-full px-3 py-2 border rounded-md bg-white text-sm"
                         required
                       />
+                      {newSubFiles.length > 0 && (
+                        <p className="mt-2 text-xs text-blue-600 font-medium">
+                          ✓ {newSubFiles.length} image{newSubFiles.length > 1 ? 's' : ''} selected
+                        </p>
+                      )}
                     </div>
                     <button
                       type="submit"
-                      disabled={isUploading || !selectedSubId}
-                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                      disabled={isUploading || !selectedSubId || newSubFiles.length === 0}
+                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed"
                     >
-                      {isUploading ? 'Uploading...' : 'Upload Image'}
+                      {isUploading
+                        ? `Uploading ${newSubFiles.length} image${newSubFiles.length > 1 ? 's' : ''}...`
+                        : `Upload ${newSubFiles.length > 0 ? `${newSubFiles.length} ` : ''}Image${newSubFiles.length > 1 ? 's' : ''}`}
                     </button>
                   </div>
                 </form>
