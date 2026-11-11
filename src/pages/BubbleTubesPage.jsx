@@ -144,8 +144,36 @@ const BubbleTubesPage = () => {
           <div className="text-center text-gray-500 py-12">No categories available yet.</div>
         ) : (
           <>
-            {/* Tabs */}
-            <div className="mb-12 flex flex-wrap gap-4 justify-center md:justify-start">
+            {/* Mobile Dropdown for Categories */}
+            <div className="md:hidden mb-8 w-full">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
+                Select Category
+              </label>
+              <div className="relative">
+                <select
+                  value={activeTab || ''}
+                  onChange={(e) => {
+                    setActiveTab(e.target.value);
+                    setVisibleCount(10);
+                  }}
+                  className="w-full bg-white text-[#1EA3DE] font-semibold text-base py-3.5 px-4 pr-10 rounded-xl border-2 border-[#1EA3DE] shadow-sm focus:outline-none appearance-none"
+                >
+                  {subcategories.map((sub) => (
+                    <option key={sub._id} value={sub.name} className="text-gray-800 font-normal">
+                      {sub.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#1EA3DE]">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Tabs */}
+            <div className="hidden md:flex mb-12 flex-wrap gap-4 justify-start">
               {subcategories.map((sub) => (
                 <button
                   key={sub._id}
@@ -153,9 +181,9 @@ const BubbleTubesPage = () => {
                     setActiveTab(sub.name);
                     setVisibleCount(10);
                   }}
-                  className={`px-6 py-2 rounded shadow-sm text-sm tracking-wide transition-colors ${activeTab === sub.name
-                    ? "bg-[#1EA3DE] text-white"
-                    : "bg-white text-[#1EA3DE] hover:bg-gray-50"
+                  className={`px-6 py-2.5 rounded-lg shadow-sm text-sm font-medium tracking-wide transition-all ${activeTab === sub.name
+                    ? "bg-[#1EA3DE] text-white shadow-md scale-105"
+                    : "bg-white text-[#1EA3DE] hover:bg-gray-50 border border-gray-100"
                     }`}
                 >
                   {sub.name}
@@ -168,11 +196,11 @@ const BubbleTubesPage = () => {
               <div className="text-center text-gray-500 py-12">No images found for this category.</div>
             ) : (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-4">
                   {displayedImages.map((img, idx) => (
                     <div
                       key={img._id}
-                      className="w-full aspect-square rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group bg-gray-200"
+                      className="w-full aspect-square rounded-2xl sm:rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all group bg-gray-200"
                       onClick={() => openLightbox(idx)}
                     >
                       <img

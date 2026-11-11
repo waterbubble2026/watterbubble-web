@@ -10,10 +10,10 @@ const FloatingBubbles = () => {
   }, []);
 
   const createBubble = (id) => {
-    const size = Math.random() * 50 + 20; // Random size between 20px and 70px
+    const size = Math.random() * 14 + 8; // Small delicate size between 8px and 22px
     const left = Math.random() * 95 + 2; // Random horizontal start (2% to 97%)
-    const duration = Math.random() * 12 + 8; // Float duration 8s to 20s
-    const delay = Math.random() * 15; // Random delay so they don't all spawn at once
+    const duration = Math.random() * 10 + 7; // Float duration 7s to 17s
+    const delay = Math.random() * 12; // Random delay so they don't all spawn at once
     
     return {
       id: id !== undefined ? id : Math.random().toString(36).substr(2, 9),
