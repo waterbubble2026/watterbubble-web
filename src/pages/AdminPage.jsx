@@ -15,6 +15,8 @@ const AdminPage = () => {
   const [selectedSubId, setSelectedSubId] = useState('');
   const [newSubFiles, setNewSubFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadStatusText, setUploadStatusText] = useState('');
 
   // Editing state for subcategory
   const [editingSubId, setEditingSubId] = useState(null);
@@ -112,6 +114,59 @@ const AdminPage = () => {
     }
   };
 
+  // Fast client-side image compression: prevents huge multi-megabyte mobile photos
+  // from choking bandwidth and ensures requests stay well below Vercel's 4.5MB limit
+  const compressImage = async (file) => {
+    if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.type === 'image/svg+xml') {
+      return file;
+    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1920;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          if (width > height) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          } else {
+            width = Math.round((width * MAX_HEIGHT) / height);
+            height = MAX_HEIGHT;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob && blob.size < file.size) {
+              const cleanName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
+              resolve(new File([blob], cleanName, { type: 'image/jpeg' }));
+            } else {
+              resolve(file);
+            }
+          },
+          'image/jpeg',
+          0.85
+        );
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(file);
+      };
+      img.src = url;
+    });
+  };
+
   const handleUploadImage = async (e) => {
     e.preventDefault();
     if (!selectedSubId || newSubFiles.length === 0) {
@@ -134,29 +189,65 @@ const AdminPage = () => {
     }
 
     setIsUploading(true);
-    const formData = new FormData();
-    newSubFiles.forEach(file => {
-      formData.append('images', file);
-    });
+    setUploadProgress(0);
+    setUploadStatusText(`Preparing to upload ${newSubFiles.length} image(s)...`);
 
-    try {
-      const res = await fetch(`/api/subcategories/${selectedSubId}/images`, {
-        method: 'POST',
-        body: formData
-      });
-      if (res.ok) {
-        setNewSubFiles([]);
-        e.target.reset();
-        fetchSubcategories();
-      } else {
-        const errorData = await res.json();
-        alert(errorData.error || 'Failed to upload image(s)');
+    const total = newSubFiles.length;
+    let successfulUploads = 0;
+    let failedUploads = 0;
+
+    // Upload each image sequentially to avoid Vercel 4.5MB payload limit & function timeouts
+    for (let i = 0; i < total; i++) {
+      const originalFile = newSubFiles[i];
+      const currentNum = i + 1;
+      setUploadStatusText(`Processing & uploading ${currentNum} of ${total}: ${originalFile.name}...`);
+
+      // Compress client-side if large
+      const fileToUpload = await compressImage(originalFile);
+
+      const formData = new FormData();
+      formData.append('images', fileToUpload);
+
+      try {
+        const res = await fetch(`/api/subcategories/${selectedSubId}/images`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (res.ok) {
+          successfulUploads++;
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          console.error(`Failed to upload ${originalFile.name}:`, errData);
+          failedUploads++;
+        }
+      } catch (err) {
+        console.error(`Network error uploading ${originalFile.name}:`, err);
+        failedUploads++;
       }
-    } catch (err) {
-      console.error(err);
-      alert('Error uploading image(s)');
+
+      const percent = Math.round((currentNum / total) * 100);
+      setUploadProgress(percent);
     }
+
     setIsUploading(false);
+    fetchSubcategories();
+
+    if (failedUploads === 0) {
+      setUploadStatusText(`All ${successfulUploads} image(s) uploaded successfully!`);
+      alert(`Successfully uploaded all ${successfulUploads} image(s)!`);
+      setNewSubFiles([]);
+      e.target.reset();
+      setTimeout(() => {
+        setUploadProgress(0);
+        setUploadStatusText('');
+      }, 4000);
+    } else {
+      setUploadStatusText(`Uploaded ${successfulUploads} image(s). ${failedUploads} failed.`);
+      alert(`Uploaded ${successfulUploads} of ${total} images. (${failedUploads} failed)`);
+      setNewSubFiles([]);
+      e.target.reset();
+    }
   };
 
   const handleDeleteSubcategory = async (id) => {
@@ -500,14 +591,38 @@ const AdminPage = () => {
                         </p>
                       )}
                     </div>
+                    {/* Live Progress Bar */}
+                    {isUploading && (
+                      <div className="space-y-2 pt-2 bg-blue-50/70 p-3 rounded-lg border border-blue-100">
+                        <div className="flex justify-between items-center text-xs font-semibold text-gray-700">
+                          <span className="truncate pr-2 text-blue-900">{uploadStatusText}</span>
+                          <span className="text-blue-600 font-bold shrink-0">{uploadProgress}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
+                          <div
+                            className="bg-blue-600 h-full rounded-full transition-all duration-300 ease-out shadow-sm"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
                     <button
                       type="submit"
                       disabled={isUploading || !selectedSubId || newSubFiles.length === 0}
-                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed"
+                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2.5 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
-                      {isUploading
-                        ? `Uploading ${newSubFiles.length} image${newSubFiles.length > 1 ? 's' : ''}...`
-                        : `Upload ${newSubFiles.length > 0 ? `${newSubFiles.length} ` : ''}Image${newSubFiles.length > 1 ? 's' : ''}`}
+                      {isUploading ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                          </svg>
+                          <span>Uploading ({uploadProgress}%)</span>
+                        </>
+                      ) : (
+                        <span>Upload {newSubFiles.length > 0 ? `${newSubFiles.length} ` : ''}Image{newSubFiles.length > 1 ? 's' : ''}</span>
+                      )}
                     </button>
                   </div>
                 </form>

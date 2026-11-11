@@ -11,9 +11,24 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bubblewater')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Robust Serverless MongoDB connection helper
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bubblewater', {
+    serverSelectionTimeoutMS: 8000,
+  });
+};
+
+// Ensure DB is connected before processing requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    res.status(500).json({ error: 'Database connection failed: ' + err.message });
+  }
+});
 
 // Configure Cloudinary
 cloudinary.config({
@@ -24,29 +39,42 @@ cloudinary.config({
 
 // Use memory storage for Vercel
 const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB per file
+});
 
-// Helper to upload buffer to Cloudinary
-const uploadToCloudinary = (buffer) => {
+// Helper to upload buffer to Cloudinary using direct base64 upload (prevents stream hangs in serverless)
+const uploadToCloudinary = (fileOrBuffer) => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { 
-        folder: 'bubblewater',
-        transformation: [
-          { width: 1200, crop: 'limit' },
-          { quality: 'auto:good' },
-          { fetch_format: 'auto' }
-        ]
-      },
-      (error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
+    try {
+      const buffer = Buffer.isBuffer(fileOrBuffer) ? fileOrBuffer : fileOrBuffer.buffer;
+      const mime = fileOrBuffer.mimetype || 'image/jpeg';
+      const base64Data = `data:${mime};base64,${buffer.toString('base64')}`;
+
+      cloudinary.uploader.upload(
+        base64Data,
+        { 
+          folder: 'bubblewater',
+          timeout: 25000,
+          transformation: [
+            { width: 1200, crop: 'limit' },
+            { quality: 'auto:good' },
+            { fetch_format: 'auto' }
+          ]
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
         }
-      }
-    );
-    uploadStream.end(buffer);
+      );
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
@@ -116,8 +144,8 @@ app.put('/api/subcategories/:id', async (req, res) => {
   }
 });
 
-// Add images to subcategory (supports multiple uploads)
-app.post('/api/subcategories/:id/images', upload.array('images', 25), async (req, res) => {
+// Add images to subcategory (supports multiple or single uploads)
+app.post('/api/subcategories/:id/images', upload.any(), async (req, res) => {
   try {
     const files = req.files || (req.file ? [req.file] : []);
     if (!files || files.length === 0) {
