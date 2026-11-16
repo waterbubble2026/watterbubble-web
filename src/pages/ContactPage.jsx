@@ -140,7 +140,14 @@ ${formData.get('message')}`;
           {/* Bottom Info Section */}
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start pb-8">
             <div className="w-full md:w-1/2">
-              <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=600" alt="Water features" className="w-full rounded-xl shadow-md object-cover h-64 md:h-80" />
+              <iframe
+                title="Water Bubble Walls location - Udaipur, Rajasthan"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29028.0393175933!2d73.68506414983814!3d24.571765128918344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1794813104752!5m2!1sen!2sin"
+                className="w-full h-64 md:h-80 rounded-xl shadow-md border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              ></iframe>
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center h-full text-gray-600 text-sm font-light space-y-4">
               <p>
