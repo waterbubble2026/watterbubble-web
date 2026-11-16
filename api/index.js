@@ -5,6 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import Subcategory from './models/Subcategory.js';
 import LatestInstallation from './models/LatestInstallation.js';
+import Project, { PROJECT_STATUSES } from './models/Project.js';
 
 dotenv.config();
 
@@ -267,6 +268,106 @@ app.delete('/api/latest-installations/:id', async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Projects API
+
+const isImageFile = (file) => !!file && typeof file.mimetype === 'string' && file.mimetype.startsWith('image/');
+
+// Turns Mongoose validation errors into a 400 with a readable message, everything else into a 500
+const sendProjectError = (res, error) => {
+  if (error?.name === 'ValidationError') {
+    const message = Object.values(error.errors).map(e => e.message).join(', ');
+    return res.status(400).json({ error: message });
+  }
+  console.error('Projects API error:', error);
+  return res.status(500).json({ error: error.message });
+};
+
+app.get('/api/projects', async (req, res) => {
+  try {
+    const items = await Project.find().sort({ createdAt: -1 });
+    res.json(items);
+  } catch (error) {
+    sendProjectError(res, error);
+  }
+});
+
+app.post('/api/projects', upload.single('image'), async (req, res) => {
+  try {
+    const { title, location, description, status } = req.body;
+    if (!title?.trim() || !location?.trim() || !description?.trim()) {
+      return res.status(400).json({ error: 'Title, location and description are required' });
+    }
+    if (!PROJECT_STATUSES.includes(status)) {
+      return res.status(400).json({ error: `Status must be one of: ${PROJECT_STATUSES.join(', ')}` });
+    }
+    if (!req.file) return res.status(400).json({ error: 'No image provided' });
+    if (!isImageFile(req.file)) return res.status(400).json({ error: 'Only image files are allowed' });
+
+    const uploadResult = await uploadToCloudinary(req.file);
+
+    const item = new Project({
+      title,
+      location,
+      description,
+      status,
+      imageUrl: uploadResult.secure_url
+    });
+    await item.save();
+    res.status(201).json(item);
+  } catch (error) {
+    sendProjectError(res, error);
+  }
+});
+
+// Update a project. The image is optional: send a new one to replace the old one.
+app.put('/api/projects/:id', upload.single('image'), async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) return res.status(404).json({ error: 'Not found' });
+    const item = await Project.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Not found' });
+
+    const { title, location, description, status } = req.body;
+    if (title !== undefined) item.title = title;
+    if (location !== undefined) item.location = location;
+    if (description !== undefined) item.description = description;
+    if (status !== undefined) {
+      if (!PROJECT_STATUSES.includes(status)) {
+        return res.status(400).json({ error: `Status must be one of: ${PROJECT_STATUSES.join(', ')}` });
+      }
+      item.status = status;
+    }
+
+    let oldImageUrl = null;
+    if (req.file) {
+      if (!isImageFile(req.file)) return res.status(400).json({ error: 'Only image files are allowed' });
+      const uploadResult = await uploadToCloudinary(req.file);
+      oldImageUrl = item.imageUrl;
+      item.imageUrl = uploadResult.secure_url;
+    }
+
+    await item.save();
+    // Only remove the old image once the new one is safely saved
+    if (oldImageUrl) await deleteFromCloudinary(oldImageUrl);
+    res.json(item);
+  } catch (error) {
+    sendProjectError(res, error);
+  }
+});
+
+app.delete('/api/projects/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) return res.status(404).json({ error: 'Not found' });
+    const item = await Project.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Not found' });
+
+    await deleteFromCloudinary(item.imageUrl);
+    await Project.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    sendProjectError(res, error);
   }
 });
 

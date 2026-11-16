@@ -1,52 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import ProjectCard from '../components/ProjectCard';
+import ProjectModal from '../components/ProjectModal';
+
+const FILTERS = ['All', 'Ongoing', 'Completed'];
 
 const ProjectsPage = () => {
-  const [subcategories, setSubcategories] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [error, setError] = useState('');
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
-    const fetchSubs = async () => {
+    const controller = new AbortController();
+
+    const fetchProjects = async () => {
       try {
-        const res = await fetch('/api/subcategories');
+        const res = await fetch('/api/projects', { signal: controller.signal });
+        if (!res.ok) throw new Error('Failed to load projects');
         const data = await res.json();
-        setSubcategories(data);
-        if (data.length > 0) {
-          setActiveTab(data[0].name);
-        }
+        setProjects(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error('Failed to fetch subcategories', err);
+        if (err.name === 'AbortError') return;
+        console.error('Failed to fetch projects', err);
+        setError('We could not load the projects right now. Please try again later.');
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     };
-    fetchSubs();
+    fetchProjects();
+
+    return () => controller.abort();
   }, []);
 
-  const activeSubcategory = subcategories.find(sub => sub.name === activeTab);
-  const filteredImages = activeSubcategory?.images || [];
-  const displayedImages = filteredImages.slice(0, visibleCount);
+  const closeModal = useCallback(() => setSelectedProject(null), []);
 
-  const openLightbox = (index) => {
-    setCurrentImageIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setLightboxOpen(false);
-  };
-
-  const goToNext = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
-  };
-
-  const goToPrev = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
-  };
+  const visibleProjects = useMemo(
+    () => (activeFilter === 'All' ? projects : projects.filter(p => p.status === activeFilter)),
+    [projects, activeFilter]
+  );
 
   return (
     <div className="w-full flex flex-col flex-grow bg-[#f4f4f4]">
@@ -88,149 +80,60 @@ const ProjectsPage = () => {
             </p>
           </div>
         </div>
-
-        {/* Filters */}
-        {isLoading ? (
-          <p className="text-gray-500 mt-12">Loading categories...</p>
-        ) : subcategories.length === 0 ? (
-          <p className="text-gray-500 mt-12">No projects found.</p>
-        ) : (
-          <>
-            {/* Mobile Dropdown for Categories */}
-            <div className="md:hidden mt-8 mb-4 w-full">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-                Select Category
-              </label>
-              <div className="relative">
-                <select
-                  value={activeTab || ''}
-                  onChange={(e) => {
-                    setActiveTab(e.target.value);
-                    setVisibleCount(8);
-                  }}
-                  className="w-full bg-white text-[#1EA3DE] font-semibold text-base py-3.5 px-4 pr-10 rounded-xl border-2 border-[#1EA3DE] shadow-sm focus:outline-none appearance-none"
-                >
-                  {subcategories.map((sub) => (
-                    <option key={sub._id} value={sub.name} className="text-gray-800 font-normal">
-                      {sub.name}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#1EA3DE]">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop Tabs */}
-            <div className="hidden md:flex mt-12 flex-wrap gap-4 justify-start">
-              {subcategories.map((sub) => (
-                <button
-                  key={sub._id}
-                  onClick={() => {
-                    setActiveTab(sub.name);
-                    setVisibleCount(8);
-                  }}
-                  className={`px-6 py-2.5 rounded-lg shadow-sm text-sm font-medium tracking-wide transition-all ${activeTab === sub.name
-                    ? "bg-[#1EA3DE] text-white shadow-md scale-105"
-                    : "bg-white text-[#1EA3DE] hover:bg-gray-50 border border-gray-100"
-                    }`}
-                >
-                  {sub.name}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
       </section>
 
-      {/* Projects Grid */}
-      <section className="w-full max-w-screen-xl mx-auto px-6 md:px-12 pb-16">
-        {filteredImages.length === 0 && !isLoading ? (
-          <div className="text-center text-gray-500 py-12">No images found for this category.</div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-4">
-              {displayedImages.map((img, idx) => (
-                <div
-                  key={img._id}
-                  className="w-full aspect-square rounded-2xl sm:rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all group bg-gray-200"
-                  onClick={() => openLightbox(idx)}
-                >
-                  <img
-                    src={img.url}
-                    alt={`Project ${idx}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {visibleCount < filteredImages.length && (
-              <div className="mt-12 flex justify-center">
-                <button
-                  onClick={() => setVisibleCount(prev => prev + 8)}
-                  className="px-8 py-3 bg-[#1EA3DE] text-white rounded shadow-sm hover:bg-[#4a89bd] transition-colors text-sm tracking-wider uppercase"
-                >
-                  Load More
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </section>
-
-      {/* Lightbox Modal */}
-      {lightboxOpen && filteredImages.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-          {/* Close Button */}
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          {/* Previous Button */}
-          <button
-            onClick={(e) => { e.stopPropagation(); goToPrev(); }}
-            className="absolute left-2 md:left-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          {/* Main Content (Image/Video) */}
-          <div
-            className="w-full h-full flex items-center justify-center px-4 md:px-24 py-12"
-            onClick={closeLightbox}
-          >
-            <img
-              src={filteredImages[currentImageIndex].url}
-              alt="Expanded view"
-              className="max-w-full max-h-full object-contain shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
+      {/* Projects */}
+      <section className="w-full max-w-screen-xl mx-auto px-6 md:px-12 pb-20">
+        {/* Status filter */}
+        {!isLoading && !error && projects.length > 0 && (
+          <div className="flex flex-wrap gap-3 mb-10" role="group" aria-label="Filter projects by status">
+            {FILTERS.map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                aria-pressed={activeFilter === filter}
+                className={`px-6 py-2.5 rounded-lg shadow-sm text-sm font-medium tracking-wide transition-all ${activeFilter === filter
+                  ? 'bg-[#1EA3DE] text-white shadow-md'
+                  : 'bg-white text-[#1EA3DE] hover:bg-gray-50 border border-gray-100'
+                  }`}
+              >
+                {filter}
+              </button>
+            ))}
           </div>
+        )}
 
-          {/* Next Button */}
-          <button
-            onClick={(e) => { e.stopPropagation(); goToNext(); }}
-            className="absolute right-2 md:right-8 text-white/70 hover:text-white z-[60] p-2 bg-black/30 rounded-full transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      )}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" aria-busy="true">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-md animate-pulse">
+                <div className="w-full aspect-[4/3] bg-gray-200" />
+                <div className="p-5 space-y-3">
+                  <div className="h-5 bg-gray-200 rounded w-3/4" />
+                  <div className="h-3 bg-gray-200 rounded w-1/3" />
+                  <div className="h-3 bg-gray-200 rounded w-full" />
+                  <div className="h-3 bg-gray-200 rounded w-5/6" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center text-gray-500 py-12">{error}</div>
+        ) : projects.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">No projects to show yet. Please check back soon.</div>
+        ) : visibleProjects.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">No {activeFilter.toLowerCase()} projects at the moment.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {visibleProjects.map((project) => (
+              <ProjectCard key={project._id} project={project} onOpen={setSelectedProject} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <ProjectModal project={selectedProject} onClose={closeModal} />
     </div>
   );
 };

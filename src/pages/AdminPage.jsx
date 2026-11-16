@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { compressImage } from '../utils/compressImage';
+import ProjectsManager from '../components/admin/ProjectsManager';
 
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +31,7 @@ const AdminPage = () => {
   const [liFile, setLiFile] = useState(null);
   const [isLiUploading, setIsLiUploading] = useState(false);
 
-  const mainCategories = ['Water Walls', 'Bubble Walls', 'Bubble Tubes', 'Latest Installations'];
+  const mainCategories = ['Water Walls', 'Bubble Walls', 'Bubble Tubes', 'Latest Installations', 'Projects'];
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -112,59 +114,6 @@ const AdminPage = () => {
       console.error(err);
       alert('Error creating subcategory');
     }
-  };
-
-  // Fast client-side image compression: prevents huge multi-megabyte mobile photos
-  // from choking bandwidth and ensures requests stay well below Vercel's 4.5MB limit
-  const compressImage = async (file) => {
-    if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.type === 'image/svg+xml') {
-      return file;
-    }
-    return new Promise((resolve) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        URL.revokeObjectURL(url);
-        const MAX_WIDTH = 1920;
-        const MAX_HEIGHT = 1920;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-          if (width > height) {
-            height = Math.round((height * MAX_WIDTH) / width);
-            width = MAX_WIDTH;
-          } else {
-            width = Math.round((width * MAX_HEIGHT) / height);
-            height = MAX_HEIGHT;
-          }
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        canvas.toBlob(
-          (blob) => {
-            if (blob && blob.size < file.size) {
-              const cleanName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
-              resolve(new File([blob], cleanName, { type: 'image/jpeg' }));
-            } else {
-              resolve(file);
-            }
-          },
-          'image/jpeg',
-          0.85
-        );
-      };
-      img.onerror = () => {
-        URL.revokeObjectURL(url);
-        resolve(file);
-      };
-      img.src = url;
-    });
   };
 
   const handleUploadImage = async (e) => {
@@ -438,7 +387,9 @@ const AdminPage = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">Manage {activeTab}</h2>
 
-          {activeTab === 'Latest Installations' ? (
+          {activeTab === 'Projects' ? (
+            <ProjectsManager />
+          ) : activeTab === 'Latest Installations' ? (
             <div className="space-y-10">
               {/* Form for Latest Installations */}
               <form onSubmit={handleCreateLatestInstallation} className="bg-gray-50 p-6 rounded-lg border border-gray-200 max-w-2xl">
