@@ -1,9 +1,48 @@
+import { useState, useEffect } from 'react';
 import FeaturesSection from '../components/FeaturesSection';
 import ReviewsSection from '../components/ReviewsSection';
 import LatestInstallationsSection from '../components/LatestInstallationsSection';
 import HomeImageCarousel from '../components/HomeImageCarousel';
 
-const HomeContent = ({ images }) => (
+// Subcategory whose images feed the home slider: "Bubble Wall ( Government Projects)".
+// Matched by name so small spelling/spacing differences in the admin panel don't break it.
+const isGovernmentSubcategory = (sub) => /government/i.test(sub?.name || '');
+
+const HomeContent = ({ images }) => {
+  // null = still loading, [] = nothing found (falls back to the static images)
+  const [governmentImages, setGovernmentImages] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadGovernmentImages = async () => {
+      try {
+        const res = await fetch('/api/subcategories', { signal: controller.signal });
+        if (!res.ok) throw new Error('Failed to load subcategories');
+        const subs = await res.json();
+        const list = Array.isArray(subs) ? subs : [];
+
+        // Prefer the one under Bubble Walls, otherwise any subcategory that matches
+        const inBubbleWalls = list.filter(s => s.mainCategory === 'Bubble Walls' && isGovernmentSubcategory(s));
+        const matches = inBubbleWalls.length > 0 ? inBubbleWalls : list.filter(isGovernmentSubcategory);
+
+        setGovernmentImages(
+          matches.flatMap(s => (s.images || []).map(img => img.url)).filter(Boolean)
+        );
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.error('Failed to load home slider images', err);
+        setGovernmentImages([]);
+      }
+    };
+    loadGovernmentImages();
+
+    return () => controller.abort();
+  }, []);
+
+  const sliderImages = governmentImages && governmentImages.length > 0 ? governmentImages : images;
+
+  return (
   <>
     {/* Main Content */}
     <main className="relative z-10 pt-32 md:pt-36 pb-20 px-6 md:px-12 max-w-screen-2xl mx-auto min-h-screen flex items-center">
@@ -42,7 +81,12 @@ const HomeContent = ({ images }) => (
 
         {/* Right Column: Large Carousel Showcase */}
         <div className="flex flex-col h-full justify-center lg:col-span-1">
-          <HomeImageCarousel images={images} interval={2500} />
+          {governmentImages === null ? (
+            // Reserve the slider's space while loading to avoid a layout jump / flash of other images
+            <div className="w-full aspect-[4/5] lg:aspect-[3/4] min-h-[460px] lg:min-h-[520px] rounded-3xl bg-black/30 border border-white/20 animate-pulse" />
+          ) : (
+            <HomeImageCarousel key={sliderImages.length} images={sliderImages} interval={2500} />
+          )}
 
           {/* Footer Text under images */}
           <div className="mt-8 text-center text-white text-xs md:text-sm tracking-[0.2em] uppercase">
@@ -59,6 +103,7 @@ const HomeContent = ({ images }) => (
     {/* <ReviewsSection /> */}
     <LatestInstallationsSection />
   </>
-);
+  );
+};
 
 export default HomeContent;

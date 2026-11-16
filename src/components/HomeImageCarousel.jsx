@@ -138,7 +138,7 @@ const HomeImageCarousel = ({
 
       {/* Dot Indicators */}
       {images.length > 1 && (
-        <div className="absolute bottom-4 left-0 right-0 z-30 flex justify-center items-center gap-2">
+        <div className="absolute bottom-4 left-0 right-0 z-30 flex flex-wrap justify-center items-center gap-2 px-6">
           {images.map((_, index) => (
             <button
               key={index}
