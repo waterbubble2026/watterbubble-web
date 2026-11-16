@@ -117,10 +117,10 @@ const BubbleWallsPage = () => {
             {/* Right Column */}
             <div className="flex flex-col">
               <div className="grid grid-cols-2 gap-4">
-                <img src="/bubble-walls/1.png" alt="Detail 1" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="/bubble-walls/2.png" alt="Detail 2" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="/bubble-walls/3.png" alt="Detail 3" className="w-full aspect-square object-cover rounded-xl shadow-md" />
-                <img src="/bubble-walls/4.png" alt="Detail 4" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/1.jpeg" alt="Detail 1" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/2.jpeg" alt="Detail 2" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/3.jpeg" alt="Detail 3" className="w-full aspect-square object-cover rounded-xl shadow-md" />
+                <img src="/bubble-walls/4.jpeg" alt="Detail 4" className="w-full aspect-square object-cover rounded-xl shadow-md" />
               </div>
 
               <div className="mt-8 text-gray-600 text-sm leading-relaxed font-light space-y-4">
