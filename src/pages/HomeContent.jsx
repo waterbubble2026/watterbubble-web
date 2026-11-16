@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import FeaturesSection from '../components/FeaturesSection';
+import NinjaGallerySection from '../components/NinjaGallerySection';
 import ReviewsSection from '../components/ReviewsSection';
 import LatestInstallationsSection from '../components/LatestInstallationsSection';
 import HomeImageCarousel from '../components/HomeImageCarousel';
@@ -74,7 +75,7 @@ const HomeContent = ({ images }) => {
 
           <div className="mt-8 pt-4">
             <p className="text-[#1EA3DE] text-xl md:text-2xl font-light">
-              Who said water has no taste!
+              Design that breathes, water that speaks. 
             </p>
           </div>
         </div>
@@ -100,6 +101,7 @@ const HomeContent = ({ images }) => {
 
     {/* Sections */}
     <FeaturesSection />
+    <NinjaGallerySection />
     {/* <ReviewsSection /> */}
     <LatestInstallationsSection />
   </>

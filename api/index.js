@@ -157,19 +157,6 @@ app.post('/api/subcategories/:id/images', upload.any(), async (req, res) => {
     if (!sub) return res.status(404).json({ error: 'Not found' });
     
     if (!sub.images) sub.images = [];
-    const currentCount = sub.images.length;
-    const availableSlots = 25 - currentCount;
-    
-    if (availableSlots <= 0) {
-      return res.status(400).json({ error: 'Max limit of 25 images reached for this subcategory.' });
-    }
-    
-    if (files.length > availableSlots) {
-      return res.status(400).json({ 
-        error: `Cannot upload ${files.length} images. Only ${availableSlots} slot(s) remaining for this subcategory (maximum 25).` 
-      });
-    }
-    
     // Upload all files in parallel to Cloudinary
     const uploadResults = await Promise.all(
       files.map(file => uploadToCloudinary(file.buffer))

@@ -59,7 +59,7 @@ const AboutPage = () => {
                 Whether you require a stunning statement water wall, a custom-built bubble feature, an illuminated back bar display, or a complete commercial water feature installation, <strong className="text-[#999999] font-bold">Water Bubble Walls</strong> delivers bespoke solutions designed to transform interiors and create unforgettable visual impact.
               </p>
               <p className="text-[#1EA4DE] text-2xl md:text-3xl font-light mt-4">
-                Who said water has no taste!
+                 Design that breathes, water that speaks.
               </p>
             </div>
           </div>

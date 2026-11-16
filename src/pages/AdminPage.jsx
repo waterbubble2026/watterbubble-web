@@ -123,20 +123,6 @@ const AdminPage = () => {
       return;
     }
 
-    const targetSub = subcategories.find(s => s._id === selectedSubId);
-    const currentCount = targetSub?.images?.length || 0;
-    const availableSlots = 25 - currentCount;
-
-    if (availableSlots <= 0) {
-      alert('This subcategory has already reached the maximum limit of 25 images.');
-      return;
-    }
-
-    if (newSubFiles.length > availableSlots) {
-      alert(`Cannot upload ${newSubFiles.length} images. Only ${availableSlots} slot(s) remaining for this subcategory (maximum 25).`);
-      return;
-    }
-
     setIsUploading(true);
     setUploadProgress(0);
     setUploadStatusText(`Preparing to upload ${newSubFiles.length} image(s)...`);
@@ -519,7 +505,7 @@ const AdminPage = () => {
                         <option value="" disabled>Select a subcategory...</option>
                         {activeSubcategories.map(sub => (
                           <option key={sub._id} value={sub._id}>
-                            {sub.name} ({sub.images?.length || 0}/25 images)
+                            {sub.name} ({sub.images?.length || 0} images)
                           </option>
                         ))}
                       </select>
