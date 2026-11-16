@@ -25,9 +25,7 @@ const ContactPage = () => {
 *Interests:* ${interests.join(', ') || 'None'}
 
 *Message/Brief:*
-${formData.get('message')}
-
-*(Note: The user attached an image on the website, please ask them to send it here).*`;
+${formData.get('message')}`;
 
     const encodedMsg = encodeURIComponent(msg);
     window.open(`https://wa.me/918947032360?text=${encodedMsg}`, '_blank');
@@ -109,7 +107,7 @@ ${formData.get('message')}
               <textarea name="message" placeholder="Message / Project Brief *" required rows="6" className="w-full bg-white p-3 text-sm border-none focus:ring-1 focus:ring-[#1EA4DE] outline-none rounded-sm shadow-sm resize-none"></textarea>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="mb-8">
               {/* Interest Areas */}
               <div>
                 <h4 className="font-bold text-sm text-gray-800 mb-4">Interest Areas</h4>
@@ -131,15 +129,6 @@ ${formData.get('message')}
                     <span>Water Walls</span>
                   </label>
                 </div>
-              </div>
-
-              {/* File Upload */}
-              <div>
-                <h4 className="font-bold text-sm text-gray-800 mb-4">If you have any drawings or images, please upload....</h4>
-                <div className="flex items-center">
-                  <input type="file" name="attachment" accept="image/*" className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-[#999999] hover:file:bg-gray-300" />
-                </div>
-                <p className="text-[#1EA3DE] text-xs mt-4">Max. file size: 1 GB. (Only Images allowed)</p>
               </div>
             </div>
 

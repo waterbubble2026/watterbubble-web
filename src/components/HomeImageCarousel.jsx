@@ -75,14 +75,6 @@ const HomeImageCarousel = ({
       {/* Inner shadow/glow to match luxury aesthetic */}
       <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.6)] z-20 pointer-events-none rounded-3xl" />
 
-      {/* Slide Index Badge */}
-      <div className="absolute top-4 right-4 z-20 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[11px] font-medium tracking-wider text-white/90">
-        <span className="text-[#1EA3DE] font-semibold">
-          {String(selectedIndex + 1).padStart(2, '0')}
-        </span>{' '}
-        / {String(images.length).padStart(2, '0')}
-      </div>
-
       {/* Embla Viewport */}
       <div className="overflow-hidden w-full h-full" ref={emblaRef}>
         <div className="flex h-full">
